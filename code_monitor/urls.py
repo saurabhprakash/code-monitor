@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 
-from core.views import MonitorView
+from core.views import MonitorView, ReportView
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -26,6 +26,7 @@ router.register(r'monitor', MonitorView)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    # url(r'^admin/', admin.site.urls),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^admin/', admin.site.urls),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^reports/', ReportView.as_view(), name='report'),
 ]

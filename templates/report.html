@@ -1,0 +1,24 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script>
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Projects pylint score(out of 10)'
+    },
+    xAxis: {
+        categories: [{% for p in results.projects %}'{{p}}'{% if not forloop.last%},{% endif %} {% endfor %}]
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        data: [{% for p in results.scores %}{{p}}{% if not forloop.last%},{% endif %} {% endfor %}]
+    }]
+});
+</script>
