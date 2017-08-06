@@ -17,4 +17,4 @@ class MonitorView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upd
     serializer_class = CodeStandardDataSerializer
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save()
