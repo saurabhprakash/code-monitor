@@ -20,7 +20,7 @@ def internet_on():
 
 def send_data(data):
     import requests
-    r = requests.post("http://google.com", data=data, timeout=(3, 15))
+    r = requests.post("http://localhost:8000/commit/", data=data, timeout=(3, 15))
     print(r.status_code, r.reason)
 
 def send_code_diff_status():
@@ -29,8 +29,8 @@ def send_code_diff_status():
     username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
     data = {
         'lint_report': proc.stdout.read().decode("utf-8"),
-        'email': email.stdout.read().decode("utf-8"),
-        'username': username.stdout.read().decode("utf-8")
+        'email': email.stdout.read().decode("utf-8").strip(),
+        'username': username.stdout.read().decode("utf-8").strip()
     }
     if internet_on():
         send_data(data)
@@ -42,7 +42,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 """
 
 def checks_required_package_installation():
