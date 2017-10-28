@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 from jsonfield import JSONField
+
+from core import manager
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -20,6 +24,17 @@ class CodeStandardData(BaseModel):
     report = models.FileField(upload_to='uploads/%Y/%m/%d/', null=True, blank=True)
 
     def __str__(self):
-        return "%s %s %s" % (self.project, self.score, self.created_at) 
+        return "%s %s %s" % (self.project, self.score, self.created_at)
+
+
+class CommitData(BaseModel):
+    """commit data model, contains data for each commit save in field data(which is a text)"""
+
+    data = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    objects = manager.CommitDataManager()
+
         
 admin.site.register(CodeStandardData)
+admin.site.register(CommitData)
