@@ -27,3 +27,17 @@ class CommitDataManager(models.Manager):
         cd = CommitData(data=data, user=user)
         cd.save()
         return constants.SUCCESS
+
+
+class ProcessedCommitDataReportManager(models.Manager):
+
+    def create_processed_entries(self, commit_instance):
+        """creates entries which can be directly saved in CommitData"""
+        commit_instance
+        return []
+
+    def process_and_save(self, commit_instance):
+        """Take CommitData instance as input and processes it saves in format needed(in ProcessedCommitData model)"""
+        entries = self.create_processed_entries(commit_instance)
+
+        # Bulk create entries

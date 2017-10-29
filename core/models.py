@@ -40,7 +40,7 @@ class CommitData(BaseModel):
         return "%s %s" % (self.user.username, self.created_at)
 
 
-class ProcessedCommitDataReport(models.Model):
+class ProcessedCommitData(models.Model):
     """Processed data for commit"""
     file_type = models.CharField(max_length=100)
     issues_count = models.PositiveIntegerField()
@@ -50,4 +50,4 @@ class ProcessedCommitDataReport(models.Model):
 
 admin.site.register(CodeStandardData)
 admin.site.register(CommitData)
-admin.site.register(ProcessedCommitDataReport)
+admin.site.register(ProcessedCommitData)
