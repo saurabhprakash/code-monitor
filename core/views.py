@@ -48,6 +48,7 @@ class CommitView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upda
     serializer_class = serializers.CommitDataSerializer
 
     def create(self, request, format=None):
+        print(request.data.get('lint_report'))
         response = models.CommitData.objects.create_commit_entry(request.data.get('lint_report'),
                 request.data.get('email'), request.data.get('username'))
         if response == constants.SUCCESS:

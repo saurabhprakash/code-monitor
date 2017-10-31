@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 # from django.contrib.postgres.fields import JSONField
 
 from jsonfield import JSONField
@@ -46,6 +47,8 @@ class ProcessedCommitData(models.Model):
     issues_count = models.PositiveIntegerField()
     commit_ref = models.ForeignKey(CommitData)
     # meta_data = JSONField() # tobe enabled later
+
+    objects = manager.ProcessedCommitDataReportManager()
 
 
 admin.site.register(CodeStandardData)

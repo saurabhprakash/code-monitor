@@ -33,11 +33,11 @@ class ProcessedCommitDataReportManager(models.Manager):
 
     def create_processed_entries(self, commit_instance):
         """creates entries which can be directly saved in CommitData"""
-        commit_instance
         return []
 
     def process_and_save(self, commit_instance):
         """Take CommitData instance as input and processes it saves in format needed(in ProcessedCommitData model)"""
-        entries = self.create_processed_entries(commit_instance)
-
+        # entries = self.create_processed_entries(commit_instance)
+        for line in commit_instance.data.splitlines():
+            print('line=', line)
         # Bulk create entries
