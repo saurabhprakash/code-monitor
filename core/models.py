@@ -43,7 +43,7 @@ class CommitData(BaseModel):
 
 class ProcessedCommitData(models.Model):
     """Processed data for commit"""
-    file_type = models.CharField(max_length=100)
+    language = models.CharField(max_length=100)
     issues_count = models.PositiveIntegerField()
     commit_ref = models.ForeignKey(CommitData)
     # meta_data = JSONField() # tobe enabled later

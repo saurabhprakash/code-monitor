@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -31,13 +33,27 @@ class CommitDataManager(models.Manager):
 
 class ProcessedCommitDataReportManager(models.Manager):
 
-    def create_processed_entries(self, commit_instance):
+    def create_processed_entries(self, issues, commit_instance):
         """creates entries which can be directly saved in CommitData"""
-        return []
+        from core.models import ProcessedCommitData
+        ProcessedCommitData.objects.bulk_create([
+            ProcessedCommitData(language=k, issues_count=v, commit_ref=commit_instance) for k, v in issues.items()])
 
     def process_and_save(self, commit_instance):
         """Take CommitData instance as input and processes it saves in format needed(in ProcessedCommitData model)"""
-        # entries = self.create_processed_entries(commit_instance)
+        file_found = False
+        issue_dict = {}
+        found_language = ''
         for line in commit_instance.data.splitlines():
-            print('line=', line)
-        # Bulk create entries
+            if not file_found:
+                for language, regex in constants.LANGUAGE_FILE_EXTENSIONS_REGEX.items():
+                    regexp = re.compile(regex)
+                    if regexp.search(line) and not file_found:
+                        file_found = True
+                        found_language = language
+            else:
+                if len(line) == 0:
+                    file_found = False
+                else:
+                    issue_dict[found_language] = issue_dict.get(found_language, 0) + 1
+        self.create_processed_entries(issue_dict, commit_instance)
