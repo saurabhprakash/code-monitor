@@ -70,6 +70,7 @@ def main():
     """
     """
     checks_required_package_installation()
+    install_git_hook()
 
 
 if __name__ == '__main__':
