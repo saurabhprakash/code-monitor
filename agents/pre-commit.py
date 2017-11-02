@@ -60,7 +60,7 @@ def install_git_hook():
         print ('No existing pre commit hook found')
         pass
 
-    f = open('.git/hooks/pre-commit', 'wb+')
+    f = open('.git/hooks/pre-commit', 'w+')
     f.write(RUNNABLE_CODE_ON_PRE_COMMIT)
     f.close()
     subprocess.call(['chmod', '0755', '.git/hooks/pre-commit'])
