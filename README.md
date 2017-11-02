@@ -1,37 +1,14 @@
-## Welcome to GitHub Pages
+## Welcome to Code Monitor
 
-You can use the [editor on GitHub](https://github.com/saurabhprakash/code-monitor/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Purpose of code monitor project is to track overall activity of code across languages. There are two parts of codebase, main server which records all the activity and 2nd are various kinds of agent which are to be installed on users system for sending those reports
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Prerequisite: Python3.5
 
-### Markdown
+### Things which can be done
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- Track each commits: 
+  - Download [pre-commit](https://github.com/saurabhprakash/code-monitor/blob/master/agents/pre-commit.py) file to your root codebase, and run "python pre-commit.py": This will install the required dependencies to your system
+  - Post setup pre-commit.py downloaded above can be deleted(or remove from git tracking code)
+- Track overall status of codebase
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/saurabhprakash/code-monitor/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
