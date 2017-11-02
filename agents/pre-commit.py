@@ -2,7 +2,8 @@ import pip
 import os
 import subprocess
 
-REQUIRED_PACKAGES = ['git-lint', 'https://github.com/saurabhprakash/closure-linter/archive/master.zip', 'requests']
+REQUIRED_PACKAGES = ['git-lint', 'https://github.com/saurabhprakash/closure-linter/archive/master.zip', 'requests',
+                     'pylint', 'pep8']
 
 RUNNABLE_CODE_ON_PRE_COMMIT = """#!/usr/bin/env python
 import subprocess
@@ -25,8 +26,8 @@ def send_data(data):
 
 def send_code_diff_status():
     proc = subprocess.Popen(["git lint"], shell=True, stdout=subprocess.PIPE)
-    email = subprocess.Popen(["git config user.email"], shell=True, stdout=subprocess.PIPE)
-    username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
+    email = subprocess.Popen(["git", "config", "user.email"], shell=True, stdout=subprocess.PIPE)
+    username = subprocess.Popen(["git", "config" "user.name"], shell=True, stdout=subprocess.PIPE)
     data = {
         'lint_report': proc.stdout.read().decode("utf-8"),
         'email': email.stdout.read().decode("utf-8").strip(),
@@ -57,7 +58,7 @@ def install_git_hook():
     try:
         os.remove('.git/hooks/pre-commit')
     except:
-        print ('No existing pre commit hook found')
+        print('No existing pre commit hook found')
         pass
 
     f = open('.git/hooks/pre-commit', 'w+')
@@ -67,11 +68,12 @@ def install_git_hook():
 
 
 def main():
-    """
+    """main function executor, call package installation and git hooks setup methods
     """
     checks_required_package_installation()
     install_git_hook()
 
 
 if __name__ == '__main__':
-	main()
+    main()
+
