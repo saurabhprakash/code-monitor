@@ -20,8 +20,18 @@ def internet_on():
         return False
 def send_data(data):
     import requests
-    r = requests.post("http://localhost:8000/commit/", data=data, timeout=(3, 15))
+    r = requests.post("http://localhost:8000/commit/", json=data, timeout=(3, 15))
     print(r.status_code, r.reason)
+def process_total_changes(total_changes_report):
+    file_changes_status = []
+    for line in total_changes_report.splitlines():
+        report = line.split('\t')
+        file_changes_status.append({
+                'lines_added': int(report[0]),
+                'lines_removed': int(report[1]),
+                'file_path': report[2]
+            })
+    return file_changes_status
 def send_code_diff_status():
     if os.name == 'nt':
         proc = subprocess.Popen(["git-lint", "--json"], shell=True, stdout=subprocess.PIPE)
@@ -33,12 +43,16 @@ def send_code_diff_status():
         email = subprocess.Popen(["git config user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
         total_changes = subprocess.Popen(["git diff --numstat"], shell=True, stdout=subprocess.PIPE)
+
+    total_changes = process_total_changes(total_changes.stdout.read().decode("utf-8").strip())
+
     data = {
         'lint_report': proc.stdout.read().decode("utf-8"),
         'email': email.stdout.read().decode("utf-8").strip(),
         'username': username.stdout.read().decode("utf-8").strip(),
-        'total_changes': total_changes.stdout.read().decode("utf-8").strip()
+        'total_changes': total_changes
     }
+
     if internet_on():
         send_data(data)
     else:
