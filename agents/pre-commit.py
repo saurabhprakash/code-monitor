@@ -7,6 +7,7 @@ REQUIRED_PACKAGES = ['git-lint', 'https://github.com/saurabhprakash/closure-lint
 
 RUNNABLE_CODE_ON_PRE_COMMIT = """#!/usr/bin/env python
 import subprocess
+import os
 try:
     import urllib.request as urllib2
 except ImportError:
@@ -24,10 +25,16 @@ def send_data(data):
     r = requests.post("http://localhost:8000/commit/", data=data, timeout=(3, 15))
     print(r.status_code, r.reason)
 
+
 def send_code_diff_status():
-    proc = subprocess.Popen(["git lint"], shell=True, stdout=subprocess.PIPE)
-    email = subprocess.Popen(["git", "config", "user.email"], shell=True, stdout=subprocess.PIPE)
-    username = subprocess.Popen(["git", "config" "user.name"], shell=True, stdout=subprocess.PIPE)
+    if os.name == 'nt':
+        proc = subprocess.Popen(["git", "lint"], shell=True, stdout=subprocess.PIPE)
+        email = subprocess.Popen(["git", "config", "user.email"], shell=True, stdout=subprocess.PIPE)
+        username = subprocess.Popen(["git", "config" "user.name"], shell=True, stdout=subprocess.PIPE)
+    else:
+        proc = subprocess.Popen(["git lint"], shell=True, stdout=subprocess.PIPE)
+        email = subprocess.Popen(["git config user.email"], shell=True, stdout=subprocess.PIPE)
+        username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
     data = {
         'lint_report': proc.stdout.read().decode("utf-8"),
         'email': email.stdout.read().decode("utf-8").strip(),
