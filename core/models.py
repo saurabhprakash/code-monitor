@@ -32,8 +32,10 @@ class CodeStandardData(BaseModel):
 class CommitData(BaseModel):
     """commit data model, contains data for each commit save in field data(which is a text)"""
 
-    data = models.TextField()
+    lint_report = JSONField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    change_details = JSONField(null=True, blank=True)
+    # project_details
 
     objects = manager.CommitDataManager()
 
@@ -46,7 +48,7 @@ class ProcessedCommitData(models.Model):
     language = models.CharField(max_length=100)
     issues_count = models.PositiveIntegerField()
     commit_ref = models.ForeignKey(CommitData)
-    # meta_data = JSONField() # tobe enabled later
+    meta_data = JSONField(default={})
 
     objects = manager.ProcessedCommitDataReportManager()
 
