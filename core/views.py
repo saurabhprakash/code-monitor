@@ -1,4 +1,5 @@
 import ast
+import logging
 
 from django.views.generic.base import TemplateView
 
@@ -8,6 +9,9 @@ from rest_framework import status
 
 from core import models, serializers, constants
 from core.utils import PastDayReport
+
+
+logger = logging.getLogger(__name__)
 
 
 class MonitorView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, 
@@ -54,4 +58,5 @@ class CommitView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upda
                 request.data.get('total_changes'), request.data.get('email'), request.data.get('username'))
         if response == constants.SUCCESS:
             return Response({constants.SUCCESS: True}, status=status.HTTP_201_CREATED)
+        logger.error('Error: %s' % response)
         return Response({constants.SUCCESS: False, constants.MESSAGE: response}, status=status.HTTP_400_BAD_REQUEST)
