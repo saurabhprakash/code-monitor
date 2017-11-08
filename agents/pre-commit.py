@@ -21,7 +21,7 @@ def internet_on():
 def send_data(data):
     import requests
     try:
-        r = requests.post("http://35.200.18.224/commit/", json=data, timeout=(5, 15))
+        r = requests.post("http://<server-ip>/commit/", json=data, timeout=(5, 15))
         print(r.status_code, r.reason)
     except:
         print ('Error sending commit statistics, commit will proceed. Please inform support')
