@@ -1,4 +1,5 @@
 import re
+import traceback
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -45,7 +46,10 @@ class ProcessedCommitDataReportManager(models.Manager):
         for k, v in commit_instance.lint_report.items():
             file_information = k.split(constants.DOT)
             language_file_extension = file_information[constants.FILE_EXTENSIONS_LOCATION_INDEX]
-            issue_dict[constants.LANGUAGE_FILE_EXTENSIONS[language_file_extension]] = len(v.get('comments'))
+            try:
+                issue_dict[constants.LANGUAGE_FILE_EXTENSIONS[language_file_extension]] = len(v.get('comments'))
+            except Exception as e:
+                traceback.print_exc()
         self.create_processed_entries(issue_dict, commit_instance)
 
     def process_and_save(self, commit_instance):

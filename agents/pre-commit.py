@@ -3,7 +3,7 @@ import os
 import subprocess
 
 REQUIRED_PACKAGES = ['git-lint', 'https://github.com/saurabhprakash/closure-linter/archive/master.zip', 'requests',
-                     'pylint', 'pep8']
+                     'pylint', 'pep8', 'html-linter']
 
 RUNNABLE_CODE_ON_PRE_COMMIT = """#!/usr/bin/env python
 import subprocess
