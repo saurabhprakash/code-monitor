@@ -43,8 +43,8 @@ class ProcessedCommitDataReportManager(models.Manager):
         """Take CommitData instance as input and processes it saves in format needed(in ProcessedCommitData model)"""
         issue_dict = {}
         for k, v in commit_instance.lint_report.items():
-            file_information = k.split('.')
-            language_file_extension = file_information[-1]
+            file_information = k.split(constants.DOT)
+            language_file_extension = file_information[constants.FILE_EXTENSIONS_LOCATION_INDEX]
             issue_dict[constants.LANGUAGE_FILE_EXTENSIONS[language_file_extension]] = len(v.get('comments'))
         self.create_processed_entries(issue_dict, commit_instance)
 
