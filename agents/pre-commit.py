@@ -20,8 +20,11 @@ def internet_on():
         return False
 def send_data(data):
     import requests
-    r = requests.post("http://localhost:8000/commit/", json=data, timeout=(3, 15))
-    print(r.status_code, r.reason)
+    try:
+        r = requests.post("http://35.200.18.224/commit/", json=data, timeout=(5, 15))
+        print(r.status_code, r.reason)
+    except:
+        print ('Error sending commit statistics, commit will proceed. Please inform support')
 def process_total_changes(total_changes_report):
     file_changes_status = []
     for line in total_changes_report.splitlines():
@@ -52,7 +55,6 @@ def send_code_diff_status():
         'username': username.stdout.read().decode("utf-8").strip(),
         'total_changes': total_changes
     }
-
     if internet_on():
         send_data(data)
     else:
