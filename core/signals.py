@@ -6,4 +6,4 @@ from core import models
 @receiver(post_save, sender=models.CommitData)
 def create_processed_commit(sender, instance, created, **kwargs):
     if created:
-        models.ProcessedCommitData.objects.process_and_save(instance)
+        models.ProcessedCommitData.objects.process_commit_entry(instance)

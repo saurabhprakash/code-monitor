@@ -9,6 +9,14 @@ USER_DOES_NOT_EXIST = 'user does not exist, please get created by admin'
 PYTHON = 'python'
 JAVA = 'java'
 JAVASCRIPT = 'javascript'
+HTML = 'html'
+
+LANGUAGE_FILE_EXTENSIONS = {
+    'py': PYTHON,
+    'java': JAVA,
+    'js': JAVASCRIPT,
+    'html': HTML
+}
 
 LANGUAGE_FILE_EXTENSIONS_REGEX = {
     PYTHON: r'[0-9a-zA-Z:\/\-_ ]+.py',

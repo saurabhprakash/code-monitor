@@ -1,3 +1,5 @@
+import ast
+
 from django.views.generic.base import TemplateView
 
 from rest_framework import viewsets, mixins
@@ -48,8 +50,8 @@ class CommitView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upda
     serializer_class = serializers.CommitDataSerializer
 
     def create(self, request, format=None):
-        response = models.CommitData.objects.create_commit_entry(request.data.get('lint_report'),
-                request.data.get('email'), request.data.get('username'))
+        response = models.CommitData.objects.create_commit_entry(ast.literal_eval(request.data.get('lint_report')),
+                request.data.get('total_changes'), request.data.get('email'), request.data.get('username'))
         if response == constants.SUCCESS:
             return Response({constants.SUCCESS: True}, status=status.HTTP_201_CREATED)
         return Response({constants.SUCCESS: False, constants.MESSAGE: response}, status=status.HTTP_400_BAD_REQUEST)
