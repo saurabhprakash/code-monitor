@@ -40,7 +40,7 @@ class CommitData(BaseModel):
     objects = manager.CommitDataManager()
 
     def __str__(self):
-        return "%s %s" % (self.user.username, self.created_at)
+        return "id: %s, user: %s, time: %s" % (self.pk, self.user.username, self.created_at)
 
 
 class ProcessedCommitData(models.Model):
@@ -51,6 +51,9 @@ class ProcessedCommitData(models.Model):
     meta_data = JSONField(default={})
 
     objects = manager.ProcessedCommitDataReportManager()
+
+    def __str__(self):
+        return "id:%s, commit-id: %s, language: %s" % (self.pk, self.commit_ref.id, self.language)
 
 
 admin.site.register(CodeStandardData)
