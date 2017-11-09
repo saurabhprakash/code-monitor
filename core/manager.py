@@ -26,7 +26,7 @@ class CommitDataManager(models.Manager):
         self.username = username
         user = self.get_user()
         if not user:
-            return constants.USER_DOES_NOT_EXIST
+            return "email: %s, username: %s, error: %s" % (email, username, constants.USER_DOES_NOT_EXIST)
         cd = CommitData(lint_report=lint_report, user=user, change_details=change_details)
         cd.save()
         return constants.SUCCESS
