@@ -60,3 +60,14 @@ class CommitView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upda
             return Response({constants.SUCCESS: True}, status=status.HTTP_201_CREATED)
         logger.error('Error: %s' % response)
         return Response({constants.SUCCESS: False, constants.MESSAGE: response}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CodeBoard(TemplateView):
+    """Overall dashboard"""
+
+    template_name = "dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(CodeBoard, self).get_context_data(**kwargs)
+
+        return context
