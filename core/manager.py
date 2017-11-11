@@ -31,6 +31,15 @@ class CommitDataManager(models.Manager):
         cd.save()
         return constants.SUCCESS
 
+    def commits_update(self):
+        """:returns response related to all commits"""
+        from core.models import CommitData
+        last_commit = CommitData.objects.last()
+        return {
+            "count": CommitData.objects.count(),
+            "last_entry_email": last_commit.user.email
+        }
+
 
 class ProcessedCommitDataReportManager(models.Manager):
 

@@ -22,7 +22,7 @@ class PastDayReport(object):
         response = {}
         for q in qs:
             if (q.project not in response) or (q.project in response and \
-                response[q.project].created_at < q.created_at) :
+                    response[q.project].created_at < q.created_at):
                 response[q.project] = q
         return response
 
@@ -49,13 +49,18 @@ class PastDayReport(object):
 
     def send_status_report(self):
         report = self.generate()
-        print ('report=', report)
         html_message = loader.render_to_string('report.html', report)
         send_mail(SUBJECT, MESSAGE, settings.FROM, settings.TO, fail_silently=False, 
             html_message=html_message)
-        print ('complete')
-        
+
     def generate(self):
         qs = self.query()
         unique_response = self.process_queryset_to_fetch_unique(qs)
         return self.prepare_response(unique_response)
+
+
+class DashboardReports:
+
+    def reports(self):
+        return {}
+

@@ -7,8 +7,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework import status
 
-from core import models, serializers, constants
-from core.utils import PastDayReport
+from core import models, serializers, constants, utils
 
 
 logger = logging.getLogger(__name__)
@@ -39,7 +38,7 @@ class ReportView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ReportView, self).get_context_data(**kwargs)
-        pd = PastDayReport()
+        pd = utils.PastDayReport()
         context['results'] = pd.generate()
         return context
 
@@ -69,5 +68,6 @@ class CodeBoard(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CodeBoard, self).get_context_data(**kwargs)
-
+        reports = utils.DashboardReports()
+        context.update(reports.reports())
         return context
