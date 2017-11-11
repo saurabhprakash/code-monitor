@@ -9,7 +9,11 @@
 <body>
   <div class="container">
     {% block content %}
-      <div id="content"></div>
+      <div id="content">
+          <p>Latest commit details:</p>
+          <p>Total commits:<span id="total_commits"></span></p>
+          <p>Last commit came from:<span id="last_commit_email"></span></p>
+      </div>
     {% endblock content %}
   </div>
   <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -25,6 +29,10 @@
         socket.onmessage = function message(event) {
           var data = JSON.parse(event.data);
           // NOTE: We escape JavaScript to prevent XSS attacks.
+          var count = encodeURI(data['count']);
+          var last_entry_email = encodeURI(data['last_entry_email']);
+          $("#total_commits").html(count);
+          $("#last_commit_email").html(last_entry_email);
         };
 
         if (socket.readyState == WebSocket.OPEN) {
