@@ -13,6 +13,7 @@
           <p>Latest commit details:</p>
           <p>Total commits:<span id="total_commits"></span></p>
           <p>Last commit came from:<span id="last_commit_email"></span></p>
+          Per user commit entry:<p id="per_user_commits"></p>
       </div>
     {% endblock content %}
   </div>
@@ -31,8 +32,10 @@
           // NOTE: We escape JavaScript to prevent XSS attacks.
           var count = encodeURI(data['count']);
           var last_entry_email = encodeURI(data['last_entry_email']);
+          var user_commits_count = JSON.stringify((data['user_commits_count']));
           $("#total_commits").html(count);
           $("#last_commit_email").html(last_entry_email);
+          $("#per_user_commits").html(user_commits_count);
         };
 
         if (socket.readyState == WebSocket.OPEN) {

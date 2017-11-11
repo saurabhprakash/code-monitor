@@ -3,6 +3,7 @@ import traceback
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 from core import constants
 
@@ -34,10 +35,15 @@ class CommitDataManager(models.Manager):
     def commits_update(self):
         """:returns response related to all commits"""
         from core.models import CommitData
-        last_commit = CommitData.objects.last()
+        last_commit = CommitData.objects.select_related('user').last()
+        user_commits_count = CommitData.objects.values('user__email').annotate(number_of_entries=Count('user')).\
+            order_by('-number_of_entries')
+
         return {
             "count": CommitData.objects.count(),
-            "last_entry_email": last_commit.user.email
+            "last_entry_email": last_commit.user.email,
+            "user_commits_count": {user_entry['user__email']: user_entry['number_of_entries'] \
+                                   for user_entry in user_commits_count}
         }
 
 
