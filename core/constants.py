@@ -26,3 +26,5 @@ LANGUAGE_FILE_EXTENSIONS_REGEX = {
     JAVA: r'[0-9a-zA-Z:\/\-_ ]+.java',
     JAVASCRIPT: r'[0-9a-zA-Z:\/\-_ ]+.js'
 }
+
+INSTANT_COMMIT_REPORT = 'commit_report'

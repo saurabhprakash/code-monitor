@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 from channels import Group
 
-from core import models
+from core import models, constants
 
 @receiver(post_save, sender=models.CommitData)
 def create_processed_commit(sender, instance, created, **kwargs):
@@ -16,6 +16,6 @@ def create_processed_commit(sender, instance, created, **kwargs):
     if created:
         models.ProcessedCommitData.objects.process_commit_entry(instance)
 
-        Group('socket_report').send({
+        Group(constants.INSTANT_COMMIT_REPORT).send({
             'text': json.dumps(models.CommitData.objects.commits_update())
         })
