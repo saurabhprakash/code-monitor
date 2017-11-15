@@ -40,12 +40,12 @@ def send_code_diff_status():
         proc = subprocess.Popen(["git-lint", "--json"], shell=True, stdout=subprocess.PIPE)
         email = subprocess.Popen(["git", "config", "user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git", "config" "user.name"], shell=True, stdout=subprocess.PIPE)
-        total_changes = subprocess.Popen(["git", "diff" "--numstat"], shell=True, stdout=subprocess.PIPE)
+        total_changes = subprocess.Popen(["git", "diff", "--staged", "--numstat"], shell=True, stdout=subprocess.PIPE)
     else:
         proc = subprocess.Popen(["git-lint --json"], shell=True, stdout=subprocess.PIPE)
         email = subprocess.Popen(["git config user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
-        total_changes = subprocess.Popen(["git diff --numstat"], shell=True, stdout=subprocess.PIPE)
+        total_changes = subprocess.Popen(["git diff --staged --numstat"], shell=True, stdout=subprocess.PIPE)
 
     total_changes = process_total_changes(total_changes.stdout.read().decode("utf-8").strip())
 
