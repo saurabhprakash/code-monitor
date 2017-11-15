@@ -37,12 +37,12 @@ def process_total_changes(total_changes_report):
     return file_changes_status
 def send_code_diff_status():
     if os.name == 'nt':
-        proc = subprocess.Popen(["git-lint", "--json"], shell=True, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(["git-lint", "-t", "--json"], shell=True, stdout=subprocess.PIPE)
         email = subprocess.Popen(["git", "config", "user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git", "config" "user.name"], shell=True, stdout=subprocess.PIPE)
         total_changes = subprocess.Popen(["git", "diff", "--staged", "--numstat"], shell=True, stdout=subprocess.PIPE)
     else:
-        proc = subprocess.Popen(["git-lint --json"], shell=True, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(["git-lint -t --json"], shell=True, stdout=subprocess.PIPE)
         email = subprocess.Popen(["git config user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
         total_changes = subprocess.Popen(["git diff --staged --numstat"], shell=True, stdout=subprocess.PIPE)
