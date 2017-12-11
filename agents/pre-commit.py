@@ -30,8 +30,8 @@ def process_total_changes(total_changes_report):
     for line in total_changes_report.splitlines():
         report = line.split('\t')
         file_changes_status.append({
-                'lines_added': int(report[0]),
-                'lines_removed': int(report[1]),
+                'lines_added': int(report[0]) if report[0].isdigit() else report[0],
+                'lines_removed': int(report[1]) if report[1].isdigit() else report[1],
                 'file_path': report[2]
             })
     return file_changes_status

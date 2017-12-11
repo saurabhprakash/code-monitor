@@ -13,18 +13,22 @@ PYTHON = 'python'
 JAVA = 'java'
 JAVASCRIPT = 'javascript'
 HTML = 'html'
+CSS = 'css'
 
 LANGUAGE_FILE_EXTENSIONS = {
     'py': PYTHON,
     'java': JAVA,
     'js': JAVASCRIPT,
-    'html': HTML
+    'html': HTML,
+    'css': CSS,
 }
 
 LANGUAGE_FILE_EXTENSIONS_REGEX = {
     PYTHON: r'[0-9a-zA-Z:\/\-_ ]+.py',
     JAVA: r'[0-9a-zA-Z:\/\-_ ]+.java',
-    JAVASCRIPT: r'[0-9a-zA-Z:\/\-_ ]+.js'
+    JAVASCRIPT: r'[0-9a-zA-Z:\/\-_ ]+.js',
+    HTML: r'[0-9a-zA-Z:\/\-_ ]+.html',
+    CSS: r'[0-9a-zA-Z:\/\-_ ]+.css',
 }
 
 INSTANT_COMMIT_REPORT = 'commit_report'
