@@ -47,6 +47,13 @@ class CommitDataManager(models.Manager):
                                    for user_entry in user_commits_count}
         }
 
+    def ranged_query(self, start_date, end_date):
+        """Takes start date and end date as parameters
+            :returns: CommitData objects for the given date range
+        """
+        from core.models import CommitData
+        return CommitData.objects.select_related('user').filter(created_at__range=(start_date, end_date))
+
 
 class ProcessedCommitDataReportManager(models.Manager):
 
@@ -93,3 +100,11 @@ class ProcessedCommitDataReportManager(models.Manager):
                 else:
                     issue_dict[found_language] = issue_dict.get(found_language, 0) + 1
         self.create_processed_entries(issue_dict, commit_instance)
+
+    def ranged_query(self, start_date, end_date):
+        """Takes start date and end date as parameters
+            :returns: ProcessedCommitData objects for the given date range
+        """
+        from core.models import ProcessedCommitData
+        return ProcessedCommitData.objects.select_related('commit_ref__user').\
+            filter(commit_ref__created_at__range=(start_date, end_date))

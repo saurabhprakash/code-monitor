@@ -5,7 +5,7 @@ from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
 
-from core.models import CodeStandardData
+from core import models
 from core.constants import MESSAGE, SUBJECT
 
 class PastDayReport(object):
@@ -13,7 +13,7 @@ class PastDayReport(object):
     """
 
     def query(self):
-        queryset = CodeStandardData.objects.filter(created_at__range=((datetime.datetime.now() - \
+        queryset = models.CodeStandardData.objects.filter(created_at__range=((datetime.datetime.now() - \
             datetime.timedelta(days=1)),datetime.datetime.now()))
         return queryset
 
@@ -61,6 +61,25 @@ class PastDayReport(object):
 
 class DashboardReports:
 
+    def commit_data_weekly_stats(self):
+        """:returns weekly data for commit data models
+        """
+        end_date = datetime.datetime.today()
+        start_date = end_date + datetime.timedelta(days=-7)
+        return models.CommitData.objects.ranged_query(start_date, end_date)
+
+    def processed_commit_data_weekly_stats(self):
+        """:returns weekly data for commit data models
+        """
+        end_date = datetime.datetime.today()
+        start_date = end_date + datetime.timedelta(days=-7)
+        return models.ProcessedCommitData.objects.ranged_query(start_date, end_date)
+
     def reports(self):
+        """
+        :return:
+        """
+        commit_data_weekly_stats = self.commit_data_weekly_stats()
+        processed_commit_data_weekly_stats = self.processed_commit_data_weekly_stats()
         return {}
 
