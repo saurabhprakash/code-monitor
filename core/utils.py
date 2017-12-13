@@ -94,6 +94,7 @@ class DashboardReports:
                     response['lines_removed'] = detail['lines_removed']
             return response
 
+        # Process commit data(model: CommitData)
         for data in commit_data_weekly_stats:
             if data.user.id in response:
                 response[data.user.id]['commit_count'] += 1
@@ -105,6 +106,20 @@ class DashboardReports:
                     'name': '%s %s' % (data.user.first_name, data.user.last_name),
                     'lines': calculate_lines_contribution(data.change_details, None, update=False)
                 }
+
+        # Process ProcessedCommitData model entries for weekly data
+        for data in processed_commit_data_weekly_stats:
+            if data.commit_ref.user_id in response:
+                if response[data.commit_ref.user_id].get('issues') and data.language in \
+                        response[data.commit_ref.user_id]['issues']:
+                    response[data.commit_ref.user_id]['issues'][data.language] += data.issues_count
+                else:
+                    if 'issues' in response[data.commit_ref.user_id]:
+                        response[data.commit_ref.user_id]['issues'][data.language] = data.issues_count
+                    else:
+                        response[data.commit_ref.user_id]['issues'] = {
+                            data.language: data.issues_count
+                        }
         return response
 
     def reports(self):
