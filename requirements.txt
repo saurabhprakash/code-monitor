@@ -4,3 +4,4 @@ jsonfield==2.0.2
 requests==2.18.3
 channels==1.1.8
 asgi_redis==1.4.3
+pandas==0.21.0

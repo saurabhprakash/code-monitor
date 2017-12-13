@@ -8,6 +8,7 @@ from django.conf import settings
 from core import models
 from core.constants import MESSAGE, SUBJECT
 
+
 class PastDayReport(object):
     """Generate past day report
     """
@@ -75,11 +76,46 @@ class DashboardReports:
         start_date = end_date + datetime.timedelta(days=-7)
         return models.ProcessedCommitData.objects.ranged_query(start_date, end_date)
 
+    def create_weekly_response(self, commit_data_weekly_stats, processed_commit_data_weekly_stats):
+        """gets the django query set and creates response as per user"""
+
+        response = {}
+
+        def calculate_lines_contribution(change_details, parent_change_details, update=True):
+            """calculates the number of lines added/removed in codebase
+            """
+            response = parent_change_details if parent_change_details else {}
+            for detail in change_details:
+                if update:
+                    response['lines_added'] = parent_change_details['lines_added'] + detail['lines_added']
+                    response['lines_removed'] = parent_change_details['lines_removed'] + detail['lines_removed']
+                else:
+                    response['lines_added'] = detail['lines_added']
+                    response['lines_removed'] = detail['lines_removed']
+            return response
+
+        for data in commit_data_weekly_stats:
+            if data.user.id in response:
+                response[data.user.id]['commit_count'] += 1
+                response[data.user.id]['lines'] = calculate_lines_contribution(data.change_details,
+                    response[data.user.id]['lines'], update=True)
+            else:
+                response[data.user.id] = {
+                    'commit_count': 0,
+                    'name': '%s %s' % (data.user.first_name, data.user.last_name),
+                    'lines': calculate_lines_contribution(data.change_details, None, update=False)
+                }
+        return response
+
     def reports(self):
         """
         :return:
         """
         commit_data_weekly_stats = self.commit_data_weekly_stats()
         processed_commit_data_weekly_stats = self.processed_commit_data_weekly_stats()
-        return {}
+
+        weekly_report = self.create_weekly_response(commit_data_weekly_stats, processed_commit_data_weekly_stats)
+        return {
+            'weekly_report': weekly_report
+        }
 
