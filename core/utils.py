@@ -81,17 +81,21 @@ class DashboardReports:
 
         response = {}
 
+        def get_int(value):
+            return value if isinstance(value, int) else 0
+
         def calculate_lines_contribution(change_details, parent_change_details, update=True):
             """calculates the number of lines added/removed in codebase
             """
             response = parent_change_details if parent_change_details else {}
             for detail in change_details:
                 if update:
-                    response['lines_added'] = parent_change_details['lines_added'] + detail['lines_added']
-                    response['lines_removed'] = parent_change_details['lines_removed'] + detail['lines_removed']
+                    response['lines_added'] = parent_change_details['lines_added'] + get_int(detail['lines_added'])
+                    response['lines_removed'] = parent_change_details['lines_removed'] + \
+                                                get_int(detail['lines_removed'])
                 else:
-                    response['lines_added'] = detail['lines_added']
-                    response['lines_removed'] = detail['lines_removed']
+                    response['lines_added'] = get_int(detail['lines_added'])
+                    response['lines_removed'] = get_int(detail['lines_removed'])
             return response
 
         # Process commit data(model: CommitData)
