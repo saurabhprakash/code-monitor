@@ -35,7 +35,7 @@ class CommitData(BaseModel):
     lint_report = JSONField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     change_details = JSONField(null=True, blank=True)
-    # project_details
+    project = models.CharField(max_length=255, db_index=True, default="")
 
     objects = manager.CommitDataManager()
 

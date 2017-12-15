@@ -20,7 +20,7 @@ class CommitDataManager(models.Manager):
                 user = None
         return user
 
-    def create_commit_entry(self, lint_report, change_details, email, username):
+    def create_commit_entry(self, lint_report, change_details, email, username, project):
         """Creates commit data entry"""
         from core.models import CommitData
         self.email = email
@@ -29,7 +29,7 @@ class CommitDataManager(models.Manager):
         if not user:
             user = User.objects.create_user(self.username, self.email, constants.DEFAULT_PASSWORD)
             user.save()
-        cd = CommitData(lint_report=lint_report, user=user, change_details=change_details)
+        cd = CommitData(lint_report=lint_report, user=user, change_details=change_details, project=project)
         cd.save()
         return constants.SUCCESS
 
@@ -39,7 +39,6 @@ class CommitDataManager(models.Manager):
         last_commit = CommitData.objects.select_related('user').last()
         user_commits_count = CommitData.objects.values('user__email').annotate(number_of_entries=Count('user')).\
             order_by('-number_of_entries')
-
         return {
             "count": CommitData.objects.count(),
             "last_entry_email": last_commit.user.email,
