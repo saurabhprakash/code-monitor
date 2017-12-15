@@ -41,11 +41,15 @@ def send_code_diff_status():
         email = subprocess.Popen(["git", "config", "user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git", "config" "user.name"], shell=True, stdout=subprocess.PIPE)
         total_changes = subprocess.Popen(["git", "diff", "--staged", "--numstat"], shell=True, stdout=subprocess.PIPE)
+        project = subprocess.Popen(["basename -s .git `git config --get remote.origin.url`"], shell=True,
+            stdout=subprocess.PIPE)
     else:
         proc = subprocess.Popen(["git-lint -t --json"], shell=True, stdout=subprocess.PIPE)
         email = subprocess.Popen(["git config user.email"], shell=True, stdout=subprocess.PIPE)
         username = subprocess.Popen(["git config user.name"], shell=True, stdout=subprocess.PIPE)
         total_changes = subprocess.Popen(["git diff --staged --numstat"], shell=True, stdout=subprocess.PIPE)
+        project = subprocess.Popen(["basename -s .git `git config --get remote.origin.url`"], shell=True,
+            stdout=subprocess.PIPE)
 
     total_changes = process_total_changes(total_changes.stdout.read().decode("utf-8").strip())
 
@@ -53,7 +57,8 @@ def send_code_diff_status():
         'lint_report': proc.stdout.read().decode("utf-8"),
         'email': email.stdout.read().decode("utf-8").strip(),
         'username': username.stdout.read().decode("utf-8").strip(),
-        'total_changes': total_changes
+        'total_changes': total_changes,
+        'project': project.stdout.read().decode("utf-8")
     }
     if internet_on():
         send_data(data)
