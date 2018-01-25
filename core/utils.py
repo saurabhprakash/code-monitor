@@ -106,7 +106,7 @@ class DashboardReports:
                     response[data.user.id]['lines'], update=True)
             else:
                 response[data.user.id] = {
-                    'commit_count': 0,
+                    'commit_count': 1,
                     'name': '%s %s' % (data.user.first_name, data.user.last_name),
                     'lines': calculate_lines_contribution(data.change_details, None, update=False)
                 }
