@@ -60,16 +60,26 @@
           socket.onopen();
         }
 
-        {% for k, v in weekly_report.items %}
-            var commit_data=['{{v.name}}', {{v.commit_count}}]{% if not forloop.last %}, {% endif %};
-            var names = ['{{v.name}}'{% if not forloop.last %}, {% endif %}];
-            var added = [{{v.lines.lines_added}}{% if not forloop.last %}, {% endif %}];
-            var removed = [{{v.lines.lines_removed}}{% if not forloop.last %}, {% endif %}];
-            var python = [{% if v.issues.python %}{{v.issues.python}}{% else %}0{% endif %}{% if not forloop.last %}, {% endif %}];
-            var html = [{% if v.issues.html %}{{v.issues.python}}{% else %}0{% endif %}{% if not forloop.last %}, {% endif %}];
-            var javascript = [{% if v.issues.javascript %}{{v.issues.javascript}}{% else %}0{% endif %}{% if not forloop.last %}, {% endif %}];
-        {% endfor %}
 
+        var commit_data = [];
+        var names = [];
+        var added = [];
+        var removed = [];
+        var python = [];
+        var html = [];
+        var javascript = [];
+
+
+        <!--Iterate over weekly data to provide data points for graph -->
+        {% for k, v in weekly_report.items %}
+            commit_data.push(['{{v.name}}', {{v.commit_count}}]);
+            names.push('{{v.name}}');
+            added.push({{v.lines.lines_added}});
+            removed.push({{v.lines.lines_removed}});
+            python.push({% if v.issues.python %}{{v.issues.python}}{% else %}0{% endif %});
+            html.push({% if v.issues.html %}{{v.issues.python}}{% else %}0{% endif %});
+            javascript.push({% if v.issues.javascript %}{{v.issues.javascript}}{% else %}0{% endif %});
+        {% endfor %}
 
 
         Highcharts.chart('number_of_commits_weekly', {
@@ -103,9 +113,7 @@
             },
             series: [{
                 name: 'Number_of_commits',
-                data: [
-                    commit_data
-                ],
+                data: commit_data,
                 dataLabels: {
                     enabled: true,
                     rotation: -90,
