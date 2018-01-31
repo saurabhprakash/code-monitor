@@ -42,6 +42,13 @@ class CommitData(BaseModel):
     def __str__(self):
         return "id: %s, user: %s, time: %s" % (self.pk, self.user.username, self.created_at)
 
+    @staticmethod
+    def clean_project_name(project_name):
+        """if project name contains a url process and get project name from it"""
+        if '/' in project_name:
+            return project_name.split('/')[-1]
+        return project_name
+
 
 class ProcessedCommitData(models.Model):
     """Processed data for commit"""
