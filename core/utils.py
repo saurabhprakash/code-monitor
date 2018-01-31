@@ -108,9 +108,10 @@ class DashboardReports:
                 response[data.user.id] = {
                     'commit_count': 1,
                     'name': '%s %s' % (data.user.first_name, data.user.last_name),
-                    'lines': calculate_lines_contribution(data.change_details, None, update=False)
+                    'lines': calculate_lines_contribution(data.change_details, None, update=False),
+                    # TODO: This will have bugs for user working on multiple projects
+                    'project': data.project
                 }
-
         # Process ProcessedCommitData model entries for weekly data
         for data in processed_commit_data_weekly_stats:
             if data.commit_ref.user_id in response:

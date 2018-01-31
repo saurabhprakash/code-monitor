@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-# from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.fields import ArrayField
 
 from jsonfield import JSONField
 
@@ -63,6 +63,19 @@ class ProcessedCommitData(models.Model):
         return "id:%s, commit-id: %s, language: %s" % (self.pk, self.commit_ref.id, self.language)
 
 
+class ProjectTagging(models.Model):
+    """Project Name and Tag association"""
+    tag = models.CharField(max_length=100, db_index=True)
+    projects = ArrayField(models.CharField(max_length=200), blank=True)
+
+    class Meta:
+        indexes = [GinIndex(fields=['projects'])]
+
+    def __str__(self):
+        return "tag: %s" % self.tag
+
+
 admin.site.register(CodeStandardData)
 admin.site.register(CommitData)
 admin.site.register(ProcessedCommitData)
+admin.site.register(ProjectTagging)
