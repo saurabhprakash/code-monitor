@@ -12,3 +12,17 @@ Purpose of code monitor project is to track overall activity of code across lang
 - Track overall status of codebase
 
 
+Addtional setup specific to languages(Default setup handles for python and html):
+  - css lint setup process: https://github.com/CSSLint/csslint/wiki/Command-line-interface#running-on-nodejs
+  - scss lint setup process: https://github.com/brigade/scss-lint#installation
+  - php setup process: http://pear.php.net/package/PHP_CodeSniffer/
+  - Javascript:
+    - http://jshint.com/install/
+    - https://github.com/google/closure-linter/zipball/master
+  - Ruby: https://github.com/yorickpeterse/ruby-lint#installation
+  - C++: https://github.com/google/styleguide/tree/gh-pages/cpplint
+  - CofeeScript: http://www.coffeelint.org/#install
+  - Java: https://github.com/pmd/pmd
+  
+
+
