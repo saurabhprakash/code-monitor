@@ -106,3 +106,5 @@ db.sqlite3
 uploads/
 code-monitor/local_settings.py
 static/
+
+django_cache/
