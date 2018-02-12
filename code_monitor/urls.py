@@ -30,4 +30,5 @@ urlpatterns = router.urls + [
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^reports/', views.ReportView.as_view(), name='report'),
+    url(r'^user/issues/(?P<user_id>[0-9]+)/', views.UserIssues.as_view(), name='issues-users'),
 ]

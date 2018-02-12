@@ -6,6 +6,7 @@ import traceback
 from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from core import models
 from core.constants import MESSAGE, SUBJECT
@@ -143,6 +144,20 @@ class DashboardReports:
 
         weekly_report = self.create_weekly_response(commit_data_weekly_stats, processed_commit_data_weekly_stats)
         return {
-            'weekly_report': weekly_report
+            'weekly_report': weekly_report,
+            'users': User.objects.only('first_name', 'last_name').filter(is_active=True, is_staff=False)
         }
 
+
+class IssueReports:
+
+    @staticmethod
+    def weekly_user_issue_report(user_id):
+        end_date = datetime.datetime.today()
+        start_date = end_date + datetime.timedelta(days=-7)
+        if user_id:
+            return {
+                'issues': models.CommitData.objects.get_commits_with_issues_for_user(\
+                    user_id, start_date, end_date)
+            }
+        return {'error': True, 'message': 'No user id found'}

@@ -1,5 +1,6 @@
 import ast
 import logging
+import datetime
 
 from django.views.generic.base import TemplateView
 
@@ -72,4 +73,15 @@ class CodeBoard(TemplateView):
         context = super(CodeBoard, self).get_context_data(**kwargs)
         reports = utils.DashboardReports()
         context.update(reports.reports())
+        return context
+
+
+class UserIssues(TemplateView):
+    """Controller for handling user issues page"""
+
+    template_name = 'user_issues.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserIssues, self).get_context_data(**kwargs)
+        context.update(utils.IssueReports.weekly_user_issue_report(kwargs.get('user_id')))
         return context

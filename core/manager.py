@@ -53,6 +53,14 @@ class CommitDataManager(models.Manager):
         from core.models import CommitData
         return CommitData.objects.select_related('user').filter(created_at__range=(start_date, end_date))
 
+    def get_commits_with_issues_for_user(self, user_id, start_date, end_date):
+        """Takes user_id as input and returns commit information for all the commit which 
+            has issues with it(for a given date range)
+        """
+        from core.models import CommitData, ProcessedCommitData
+        return CommitData.objects.only('lint_report', 'project').filter(user__id=user_id, 
+            created_at__range=(start_date, end_date))
+
 
 class ProcessedCommitDataReportManager(models.Manager):
 
