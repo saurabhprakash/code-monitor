@@ -20,7 +20,7 @@
   <!--code standard issue-->
     <div id="number_of_issues_weekly" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
   
-  <div class="container">
+  <!--div class="container">
     {% block content %}
       <div id="content">
           <p>Latest commit details:</p>
@@ -29,7 +29,7 @@
           Per user commit entry:<p id="per_user_commits"></p>
       </div>
     {% endblock content %}
-  </div>
+  </div-->
 
   <p>Last week user commits: {{weekly_report}}</p>
 
@@ -39,6 +39,7 @@
   {% block script %}
 
     <script>
+        /*
         var socket = new WebSocket('ws://' + window.location.host + '/commit_report/');
 
         socket.onopen = function open() {
@@ -59,7 +60,7 @@
         if (socket.readyState == WebSocket.OPEN) {
           socket.onopen();
         }
-
+        */
 
         var commit_data = [];
         var names = [];
