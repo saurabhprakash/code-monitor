@@ -30,3 +30,15 @@ LOCAL_DATABASE = {
 REDIS_CHANNEL_SETTINGS = {
     'hosts': [('localhost', 6379)],
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'django_cache',
+        'TIMEOUT': 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        },
+        'KEY_PREFIX': 'custom_application_keys'
+    }
+}
