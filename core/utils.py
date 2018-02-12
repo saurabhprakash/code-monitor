@@ -1,5 +1,7 @@
 import datetime
 import json
+import logging
+import traceback
 
 from django.template import loader
 from django.core.mail import send_mail
@@ -7,6 +9,8 @@ from django.conf import settings
 
 from core import models
 from core.constants import MESSAGE, SUBJECT
+
+logger = logging.getLogger(__name__)
 
 
 class PastDayReport(object):
@@ -89,13 +93,16 @@ class DashboardReports:
             """
             response = parent_change_details if parent_change_details else {}
             for detail in change_details:
-                if update:
-                    response['lines_added'] = parent_change_details['lines_added'] + get_int(detail['lines_added'])
-                    response['lines_removed'] = parent_change_details['lines_removed'] + \
-                                                get_int(detail['lines_removed'])
-                else:
-                    response['lines_added'] = get_int(detail['lines_added'])
-                    response['lines_removed'] = get_int(detail['lines_removed'])
+                try:
+                    if update:
+                        response['lines_added'] = parent_change_details['lines_added'] + get_int(detail['lines_added'])
+                        response['lines_removed'] = parent_change_details['lines_removed'] + \
+                                                    get_int(detail['lines_removed'])
+                    else:
+                        response['lines_added'] = get_int(detail['lines_added'])
+                        response['lines_removed'] = get_int(detail['lines_removed'])
+                except:
+                    logger.error('Error calculate_lines_contribution: %s' % traceback.print_exc())
             return response
 
         # Process commit data(model: CommitData)
