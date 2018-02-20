@@ -31,4 +31,5 @@ urlpatterns = router.urls + [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^reports/', views.ReportView.as_view(), name='report'),
     url(r'^user/issues/(?P<user_id>[0-9]+)/', views.UserIssues.as_view(), name='issues-users'),
+    url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
 ]

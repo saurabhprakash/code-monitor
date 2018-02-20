@@ -161,3 +161,11 @@ class IssueReports:
                     user_id, start_date, end_date)
             }
         return {'error': True, 'message': 'No user id found'}
+
+
+class CompareUser:
+    
+    @staticmethod
+    def compare(user_id_1, user_id_2, weeks):
+        print (user_id_1, user_id_2, weeks)
+        return {}

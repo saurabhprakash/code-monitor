@@ -85,3 +85,19 @@ class UserIssues(TemplateView):
         context = super(UserIssues, self).get_context_data(**kwargs)
         context.update(utils.IssueReports.weekly_user_issue_report(kwargs.get('user_id')))
         return context
+
+
+class UserCompare(TemplateView):
+    """Create view for compare users"""
+
+    template_name = 'compare.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserCompare, self).get_context_data(**kwargs)
+        if self.request.GET.get('u_1') and self.request.GET.get('u_2') \
+            and self.request.GET.get('m'):
+            context.update(utils.CompareUser.compare(self.request.GET.get('u_1'), 
+                self.request.GET.get('u_2'), self.request.GET.get('m')))
+        else:
+            context.update({'error': 'user ids missing or date range missing'})
+        return context

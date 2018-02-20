@@ -7,6 +7,7 @@ from django.db.models import Count
 
 from core import constants
 
+
 class CommitDataManager(models.Manager):
 
     def get_user(self):
