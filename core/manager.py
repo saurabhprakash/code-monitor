@@ -1,5 +1,6 @@
 import re
 import traceback
+import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -61,6 +62,16 @@ class CommitDataManager(models.Manager):
         from core.models import CommitData, ProcessedCommitData
         return CommitData.objects.only('lint_report', 'project').filter(user__id=user_id, 
             created_at__range=(start_date, end_date))
+    
+    def commit_counts_for_user_in_given_weeks(self, user_id, number_of_weeks):
+        """Takes number of weeks and user id as argument and return number of commits for a user
+            number_of_weeks should be int
+        """
+        from core.models import CommitData
+        end_date = datetime.datetime.today()
+        start_date = end_date + datetime.timedelta(days=-(number_of_weeks*7))
+        return CommitData.objects.filter(user__id=user_id, 
+            created_at__range=(start_date, end_date)).count()
 
 
 class ProcessedCommitDataReportManager(models.Manager):

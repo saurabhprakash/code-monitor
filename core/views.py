@@ -95,9 +95,9 @@ class UserCompare(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserCompare, self).get_context_data(**kwargs)
         if self.request.GET.get('u_1') and self.request.GET.get('u_2') \
-            and self.request.GET.get('m'):
+            and self.request.GET.get('w'):
             context.update(utils.CompareUser.compare(self.request.GET.get('u_1'), 
-                self.request.GET.get('u_2'), self.request.GET.get('m')))
+                self.request.GET.get('u_2'), self.request.GET.get('w')))
         else:
             context.update({'error': 'user ids missing or date range missing'})
         return context

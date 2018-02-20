@@ -163,9 +163,21 @@ class IssueReports:
         return {'error': True, 'message': 'No user id found'}
 
 
+class UserData:
+    
+    @staticmethod
+    def create_user_report(user_id, weeks):
+        return {
+            'number_of_commits': models.CommitData.objects.\
+                commit_counts_for_user_in_given_weeks(user_id, weeks),
+        }
+
+
 class CompareUser:
     
     @staticmethod
     def compare(user_id_1, user_id_2, weeks):
-        print (user_id_1, user_id_2, weeks)
-        return {}
+        return {
+            'user1': UserData.create_user_report(user_id_1, int(weeks)),
+            'user2': UserData.create_user_report(user_id_2, int(weeks))
+        }
