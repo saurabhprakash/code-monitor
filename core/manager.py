@@ -26,7 +26,7 @@ class CommitDataManager(models.Manager):
         """Creates commit data entry"""
         from core.models import CommitData
         self.email = email
-        self.username = username
+        self.username = username if username else email
         user = self.get_user()
         if not user:
             user = User.objects.create_user(self.username, self.email, constants.DEFAULT_PASSWORD)
