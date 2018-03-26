@@ -75,7 +75,23 @@ class ProjectTagging(models.Model):
         return "tag: %s" % self.tag
 
 
+class ProjectUsers(models.Model):
+    """Model for project and associated users
+        users field are list of users who are present in project
+        project_names are list of project names, which may be present on bitbucket/repo,
+            for e.g Project "name" may be "abc" and "project_names" will be "abc_backend",
+                "abc_frontend" etc
+    """
+    name = models.CharField('Project Name', max_length=100, db_index=True)
+    users = ArrayField(models.PositiveIntegerField(), blank=True)
+    project_names = ArrayField(models.CharField(max_length=200), blank=True)
+
+    def __str__(self):
+        return "name: %s" % self.name
+
+
 admin.site.register(CodeStandardData)
 admin.site.register(CommitData)
 admin.site.register(ProcessedCommitData)
 admin.site.register(ProjectTagging)
+admin.site.register(ProjectUsers)
