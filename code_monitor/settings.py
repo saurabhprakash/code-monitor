@@ -138,3 +138,7 @@ CHANNEL_LAYERS = {
         'ROUTING': 'core.routing.channel_routing',
     }
 }
+
+
+KAFKA_TOPIC = 'user_data'
+KAFKA_ADDRESS = 'localhost:9092'
