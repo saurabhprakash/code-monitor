@@ -13,12 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+import threading
+
 from django.conf.urls import url, include
 from django.contrib import admin
 
 from rest_framework.routers import SimpleRouter
 
 from core import views
+from core.commit_input_handler import main
+
 
 router = SimpleRouter()
 router.register(r'monitor', views.MonitorView)
@@ -33,3 +37,7 @@ urlpatterns = router.urls + [
     url(r'^user/issues/(?P<user_id>[0-9]+)/', views.UserIssues.as_view(), name='issues-users'),
     url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
 ]
+
+process_data = main.ProcessData()
+download_thread = threading.Thread(target=process_data.run_consumer)
+download_thread.start()
