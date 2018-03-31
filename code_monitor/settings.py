@@ -140,5 +140,5 @@ CHANNEL_LAYERS = {
 }
 
 
-KAFKA_TOPIC = 'user_data'
+KAFKA_TOPIC = 'test'
 KAFKA_ADDRESS = 'localhost:9092'
