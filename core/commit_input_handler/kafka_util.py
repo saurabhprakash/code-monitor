@@ -21,7 +21,7 @@ class Producer:
 
 class Consumer:
     
-    def consumer(self):
+    def consume(self):
         while True:
             for message in consumer:
                 #print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
