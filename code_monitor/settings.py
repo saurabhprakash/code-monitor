@@ -140,5 +140,5 @@ CHANNEL_LAYERS = {
 }
 
 
-KAFKA_TOPIC = 'test'
+KAFKA_TOPIC = 'userdata'# _ and . are not prefered by kafka
 KAFKA_ADDRESS = 'localhost:9092'
