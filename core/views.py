@@ -1,6 +1,8 @@
 import ast
 import logging
 import datetime
+import traceback
+import threading
 
 from django.views.generic.base import TemplateView
 
@@ -9,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from core import models, serializers, constants, utils
+from core.commit_input_handler import main
 
 
 logger = logging.getLogger(__name__)
@@ -54,14 +57,24 @@ class CommitView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upda
     serializer_class = serializers.CommitDataSerializer
 
     def create(self, request, format=None):
-        project = models.CommitData.clean_project_name(request.data.get('project') if request.data.get('project') \
-            else '')
-        response = models.CommitData.objects.create_commit_entry(ast.literal_eval(request.data.get('lint_report')),
-                request.data.get('total_changes'), request.data.get('email'), request.data.get('username'), project)
-        if response == constants.SUCCESS:
-            return Response({constants.SUCCESS: True}, status=status.HTTP_201_CREATED)
-        logger.error('Error: %s' % response)
-        return Response({constants.SUCCESS: False, constants.MESSAGE: response}, status=status.HTTP_400_BAD_REQUEST)
+        """ Pushes data to MQ client, which handles processing and saving to database
+        """
+        # Todo : Do data send task as well in background(may be through threading)
+        mq_client = main.ProcessData()
+        try:
+            download_thread = threading.Thread(target=process_data.run_consumer)
+            download_thread.start()
+            mq_client.push_data({
+                'project': request.data.get('project'),
+                'lint_report': request.data.get('lint_report'),
+                'total_changes': request.data.get('total_changes'),
+                'email': request.data.get('email'),
+                'username': request.data.get('username'),
+            })
+        except:
+            logger.error('Error pushing data to MQ: %s' % traceback.print_exc())
+
+        return Response({constants.SUCCESS: True}, status=status.HTTP_201_CREATED)
 
 
 class CodeBoard(TemplateView):

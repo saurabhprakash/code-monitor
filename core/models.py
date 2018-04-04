@@ -1,3 +1,5 @@
+import ast
+
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -48,6 +50,12 @@ class CommitData(BaseModel):
         if '/' in project_name:
             return project_name.split('/')[-1]
         return project_name
+
+    @staticmethod
+    def add_data(project, lint_report, total_changes, email, username):
+        project = CommitData.clean_project_name(project if project else '')
+        CommitData.objects.create_commit_entry(ast.literal_eval(lint_report),
+                total_changes, email, username, project)
 
 
 class ProcessedCommitData(models.Model):
