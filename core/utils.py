@@ -85,6 +85,7 @@ class DashboardReports:
         """gets the django query set and creates response as per user"""
 
         response = {}
+        user_ids = set()
 
         def get_int(value):
             return value if isinstance(value, int) else 0
@@ -120,6 +121,8 @@ class DashboardReports:
                     # TODO: This will have bugs for user working on multiple projects
                     'project': data.project
                 }
+                user_ids.add(data.user.id)
+
         # Process ProcessedCommitData model entries for weekly data
         for data in processed_commit_data_weekly_stats:
             if data.commit_ref.user_id in response:
@@ -133,6 +136,7 @@ class DashboardReports:
                         response[data.commit_ref.user_id]['issues'] = {
                             data.language: data.issues_count
                         }
+        response['user_ids_in_report'] = user_ids
         return response
 
     def reports(self):
@@ -180,4 +184,36 @@ class CompareUser:
         return {
             'user1': UserData.create_user_report(user_id_1, int(weeks)),
             'user2': UserData.create_user_report(user_id_2, int(weeks))
+        }
+
+
+class MailReport:
+    
+    @staticmethod
+    def get_users_with_no_commits(user_ids):
+        """returns users with no commits for a given time range
+            user_ids: is the list of users who have commit entries
+        """
+        return User.objects.exclude(id__in=user_ids)
+
+    @staticmethod
+    def prepare_report(r_range='weekly'):
+        dr = DashboardReports()
+        report = dr.reports()
+        response = {
+            'get_users_with_no_commits': MailReport.get_users_with_no_commits\
+                (report.get('weekly_report').get('user_ids_in_report')),
+            
+        }
+        print (response)
+
+
+class NoCommitUsers:
+
+    @staticmethod
+    def get_users_with_no_commits(weeks=1):
+        """gets number of user with no commits over given number of weeks
+        """
+        return {
+            'users': models.CommitData.objects.get_users_with_no_commit_n_weeks(weeks)
         }

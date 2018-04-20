@@ -36,8 +36,10 @@ urlpatterns = router.urls + [
     url(r'^reports/', views.ReportView.as_view(), name='report'),
     url(r'^user/issues/(?P<user_id>[0-9]+)/', views.UserIssues.as_view(), name='issues-users'),
     url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
+    url(r'^mail/report/', views.MailReport.as_view(), name='mail-report'),
+    url(r'^no-commit-users/', views.NoCommitUsers.as_view(), name='no-commit-users'),
 ]
 
-process_data = main.ProcessData()
-download_thread = threading.Thread(target=process_data.run_consumer)
-download_thread.start()
+#process_data = main.ProcessData()
+#download_thread = threading.Thread(target=process_data.run_consumer)
+#download_thread.start()

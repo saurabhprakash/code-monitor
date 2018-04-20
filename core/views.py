@@ -101,3 +101,29 @@ class UserCompare(TemplateView):
         else:
             context.update({'error': 'user ids missing or date range missing'})
         return context
+
+
+class MailReport(TemplateView):
+    """Mail reports
+    """
+
+    template_name = 'mail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MailReport, self).get_context_data(**kwargs)
+        reports = utils.MailReport()
+        context.update(reports.prepare_report())
+        return context
+
+class NoCommitUsers(TemplateView):
+    """No Commit Users
+    """
+    template_name = 'no_commit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NoCommitUsers, self).get_context_data(**kwargs)
+        reports = utils.NoCommitUsers()
+        context.update(reports.get_users_with_no_commits())
+        return context
+
+    

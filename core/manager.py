@@ -73,6 +73,16 @@ class CommitDataManager(models.Manager):
         return CommitData.objects.filter(user__id=user_id, 
             created_at__range=(start_date, end_date)).count()
 
+    def get_users_with_no_commit_n_weeks(self, n_weeks):
+        """Returns list of users with no commits for n_weeks"""
+        from core.models import CommitData
+        end_date = datetime.datetime.today()
+        start_date = end_date + datetime.timedelta(days=-(n_weeks*7))
+        cd = CommitData.objects.only('user__id').filter(created_at__range=\
+            (start_date, end_date))
+        user_ids = list(set([u.id for u in User.objects.filter(is_superuser=False, 
+            is_active=True)]) - set([u.id for u in cd]))
+        return User.objects.filter(id__in=user_ids)
 
 class ProcessedCommitDataReportManager(models.Manager):
 
