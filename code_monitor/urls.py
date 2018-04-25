@@ -17,6 +17,7 @@ import threading
 
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
 from rest_framework.routers import SimpleRouter
 
@@ -35,9 +36,9 @@ urlpatterns = router.urls + [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^reports/', views.ReportView.as_view(), name='report'),
     url(r'^user/issues/(?P<user_id>[0-9]+)/', views.UserIssues.as_view(), name='issues-users'),
-    url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
-    url(r'^mail/report/', views.MailReport.as_view(), name='mail-report'),
-    url(r'^no-commit-users/', views.NoCommitUsers.as_view(), name='no-commit-users'),
+    #url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
+    #url(r'^mail/report/', views.MailReport.as_view(), name='mail-report'),
+    url(r'^lead-reports/', login_required(views.LeadReports.as_view(), login_url='/admin'), name='lead-reports'),
 ]
 
 #process_data = main.ProcessData()

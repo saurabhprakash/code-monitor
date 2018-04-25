@@ -54,14 +54,17 @@ class CommitView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Upda
     serializer_class = serializers.CommitDataSerializer
 
     def create(self, request, format=None):
-        project = models.CommitData.clean_project_name(request.data.get('project') if request.data.get('project') \
-            else '')
-        response = models.CommitData.objects.create_commit_entry(ast.literal_eval(request.data.get('lint_report')),
-                request.data.get('total_changes'), request.data.get('email'), request.data.get('username'), project)
+        project = models.CommitData.clean_project_name(request.data.get('project') \
+            if request.data.get('project') else '')
+        response = models.CommitData.objects.create_commit_entry(\
+            ast.literal_eval(request.data.get('lint_report')), 
+            request.data.get('total_changes'), request.data.get('email').rstrip(), 
+            request.data.get('username').rstrip(), project)
         if response == constants.SUCCESS:
             return Response({constants.SUCCESS: True}, status=status.HTTP_201_CREATED)
         logger.error('Error: %s' % response)
-        return Response({constants.SUCCESS: False, constants.MESSAGE: response}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({constants.SUCCESS: False, constants.MESSAGE: response}, 
+            status=status.HTTP_400_BAD_REQUEST)
 
 
 class CodeBoard(TemplateView):
@@ -115,15 +118,18 @@ class MailReport(TemplateView):
         context.update(reports.prepare_report())
         return context
 
-class NoCommitUsers(TemplateView):
-    """No Commit Users
+
+class LeadReports(TemplateView):
+    """LeadReports
     """
     template_name = 'no_commit.html'
 
     def get_context_data(self, **kwargs):
-        context = super(NoCommitUsers, self).get_context_data(**kwargs)
-        reports = utils.NoCommitUsers()
-        context.update(reports.get_users_with_no_commits())
+        context = super(LeadReports, self).get_context_data(**kwargs)
+        reports = utils.LeadReports()
+        weeks = int(context['view'].request.GET.get('weeks')) \
+            if context['view'].request.GET.get('weeks') else 1
+        context.update(reports.get_lead_report(weeks))
         return context
 
     

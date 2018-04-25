@@ -67,25 +67,24 @@ class PastDayReport(object):
 
 class DashboardReports:
 
-    def commit_data_weekly_stats(self):
+    def commit_data_stats(self, days=7):
         """:returns weekly data for commit data models
         """
         end_date = datetime.datetime.today()
-        start_date = end_date + datetime.timedelta(days=-7)
+        start_date = end_date + datetime.timedelta(days=-(days))
         return models.CommitData.objects.ranged_query(start_date, end_date)
 
-    def processed_commit_data_weekly_stats(self):
+    def processed_commit_data_stats(self, days=7):
         """:returns weekly data for commit data models
         """
         end_date = datetime.datetime.today()
-        start_date = end_date + datetime.timedelta(days=-7)
+        start_date = end_date + datetime.timedelta(days=-(days))
         return models.ProcessedCommitData.objects.ranged_query(start_date, end_date)
 
-    def create_weekly_response(self, commit_data_weekly_stats, processed_commit_data_weekly_stats):
+    def create_response(self, commit_data_weekly_stats, processed_commit_data_weekly_stats):
         """gets the django query set and creates response as per user"""
 
         response = {}
-        user_ids = set()
 
         def get_int(value):
             return value if isinstance(value, int) else 0
@@ -119,9 +118,9 @@ class DashboardReports:
                     'name': '%s %s' % (data.user.first_name, data.user.last_name),
                     'lines': calculate_lines_contribution(data.change_details, None, update=False),
                     # TODO: This will have bugs for user working on multiple projects
-                    'project': data.project
+                    'project': data.project,
+                    'issues': {}
                 }
-                user_ids.add(data.user.id)
 
         # Process ProcessedCommitData model entries for weekly data
         for data in processed_commit_data_weekly_stats:
@@ -136,17 +135,17 @@ class DashboardReports:
                         response[data.commit_ref.user_id]['issues'] = {
                             data.language: data.issues_count
                         }
-        response['user_ids_in_report'] = user_ids
         return response
 
-    def reports(self):
+    def reports(self, week=1):
         """
         :return:
+        Call commit_data_stats and processed_commit_data_stats with week*7 
+        as those function takes number of days
         """
-        commit_data_weekly_stats = self.commit_data_weekly_stats()
-        processed_commit_data_weekly_stats = self.processed_commit_data_weekly_stats()
-
-        weekly_report = self.create_weekly_response(commit_data_weekly_stats, processed_commit_data_weekly_stats)
+        commit_data_weekly_stats = self.commit_data_stats(week*7)
+        processed_commit_data_weekly_stats = self.processed_commit_data_stats(week*7)
+        weekly_report = self.create_response(commit_data_weekly_stats, processed_commit_data_weekly_stats)
         return {
             'weekly_report': weekly_report,
             'users': User.objects.only('first_name', 'last_name').filter(is_active=True, is_staff=False)
@@ -208,12 +207,14 @@ class MailReport:
         print (response)
 
 
-class NoCommitUsers:
+class LeadReports:
 
     @staticmethod
-    def get_users_with_no_commits(weeks=1):
+    def get_lead_report(weeks=1):
         """gets number of user with no commits over given number of weeks
         """
+        dr = DashboardReports()
         return {
-            'users': models.CommitData.objects.get_users_with_no_commit_n_weeks(weeks)
+            'no_commit_users': models.CommitData.objects.get_users_with_no_commit_n_weeks(weeks),
+            'commit_report': dr.reports(weeks)
         }
