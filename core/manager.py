@@ -81,7 +81,7 @@ class CommitDataManager(models.Manager):
         cd = CommitData.objects.only('user__id').filter(created_at__range=\
             (start_date, end_date))
         user_ids = list(set([u.id for u in User.objects.filter(is_superuser=False, 
-            is_active=True)]) - set([u.id for u in cd]))
+            is_active=True)]) - set([u.user_id for u in cd]))
         return User.objects.filter(id__in=user_ids)
 
 class ProcessedCommitDataReportManager(models.Manager):
