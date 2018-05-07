@@ -92,7 +92,10 @@ class DashboardReports:
         def calculate_lines_contribution(change_details, parent_change_details, update=True):
             """calculates the number of lines added/removed in codebase
             """
-            response = parent_change_details if parent_change_details else {}
+            response = parent_change_details if parent_change_details else {
+                'lines_added': 0,
+                'lines_removed': 0
+            }
             for detail in change_details:
                 try:
                     if update:
