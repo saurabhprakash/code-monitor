@@ -4,6 +4,14 @@ Purpose of code monitor project is to track overall activity of code across lang
 
 ### Prerequisite: Python3.5
 
+##### For setting code in local:
+ - Create a python virtual env
+ - Clone code inside virtual env
+ - Inside env run "pip install -r requirements.txt"
+ - Install redis and run it
+ - From local_settings.py.template file create "local_settings.py" file
+ - Make necessary database chages
+
 ### Things which can be done
 
 - Track each commits: 
