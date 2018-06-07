@@ -1,0 +1,153 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    clear: both;
+}
+html, body {
+    height: 100%;
+}
+header{
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    background-color: lightgrey;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    box-shadow: 0px 2px 10px grey;
+}
+.data-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 55px;
+    height: calc(100% - 70px);
+}
+.side-menubar {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    padding: 45px 0px 20px;
+    background-color:#15578f;
+    color: white;
+    position: fixed;
+    height: 100%;
+}
+.rendered-page {
+    width: 85%;
+    padding: 50px 0px 50px 60px;
+    margin-left: 250px;
+    height: 100%;
+}
+.menu-items {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    padding-left: 20px;
+    border-bottom: 1px solid #104572;
+}
+.menu-items:hover {
+    cursor: pointer;
+}
+.menu-items.active {
+    background-color: #00346e;
+}
+.menu{
+    text-decoration: none !important;
+    color: white;
+}
+.menu:hover {
+    color: aquamarine;
+}
+/*dashboard css*/
+.graph {
+    min-width: 310px; 
+    height: 400px; 
+    margin: 0 auto
+}
+/* user report css */
+.user-report-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.select-message {
+    margin-bottom: 10px;
+}
+.dropdown {
+    margin: 10px 0px 25px;
+}
+table {
+    border: 1px solid lightgrey;
+}
+table thead tr {
+    background-color: #a7a7a7;
+    color: white;
+} 
+table tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+table tbody tr:nth-child(odd) {
+    background-color: white;
+}
+.modal-dialog {
+    max-width: 900px;
+    top: 200px;
+}
+#modal-data textarea + .parsed {
+    width: 100% !important; 
+    border: 1px solid lightgrey;
+}
+textarea {
+    width: 100%;
+}
+.select2-container { 
+    width: 15% !important;
+}
+.select2-results__options{
+    box-shadow: 5px 7px 10px grey;
+}
+.user-data{
+    width: 100%;
+}
+.align-center{
+    align-items: stretch;
+    display: flex;
+    height: 100%;
+}
+.page-loader {
+    width: 200px;
+    height: 200px;
+    background-image: url(/static/images/Ellipsis-1s-200px.gif);
+    background-repeat: no-repeat;
+    align-self: center;
+    margin-left: calc(50% - 100px);
+}
+/* lead reports css */
+.hidden-content {
+    display: none;
+}
+.slider {
+    min-height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #b1afaf;
+    border-radius: 5px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+.slider:hover {
+    cursor: pointer;
+}
+.dropdown-image {
+    height: 70px;
+    width: 80px;
+    position: relative;
+    top: -3px;
+}
+
