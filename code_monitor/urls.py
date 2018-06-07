@@ -39,6 +39,7 @@ urlpatterns = router.urls + [
     #url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
     #url(r'^mail/report/', views.MailReport.as_view(), name='mail-report'),
     url(r'^lead-reports/', login_required(views.LeadReports.as_view(), login_url='/admin'), name='lead-reports'),
+    url(r'^user-report/', views.UserReport.as_view(), name='user-report'),
 ]
 
 #process_data = main.ProcessData()
