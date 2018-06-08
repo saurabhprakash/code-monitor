@@ -1,3 +1,4 @@
+/* base css */
 *{
     margin: 0px;
     padding: 0px;
@@ -17,6 +18,14 @@ header{
     align-items: center;
     padding-left: 20px;
     box-shadow: 0px 2px 10px grey;
+}
+a{
+    cursor: pointer;
+    color: #f37839;
+}
+a.disabled {
+    color: #969794;
+    text-decoration: none;
 }
 header h1 {
     width: 100%;
@@ -42,9 +51,12 @@ header h1 {
 }
 .rendered-page {
     width: 85%;
-    padding: 50px 0px 50px 60px;
-    margin-left: 250px;
+    padding: 50px 50px 50px 60px;
+    margin-left: 15%;
     height: 100%;
+}
+.page-selector {
+    margin-bottom: 40px;
 }
 .page-navigation-loader {
     display: flex;
@@ -65,9 +77,10 @@ header h1 {
     border-bottom: 1px solid #104572;
 }
 .sub-menu-items {
-    padding: 0 40px 0 35px;
-    display: flex;
-    justify-content: space-around;
+    padding: 0 35px 0 35px;
+}
+.arrow {
+    margin-right: 10px;
 }
 .menu-items:hover {
     cursor: pointer;
@@ -82,6 +95,16 @@ header h1 {
 .menu:hover {
     color: aquamarine;
 }
+.lead-reports {
+    display: flex;
+    justify-content: space-between;
+}
+.dropdown-image {
+    height: 17px;
+    width: 17px;
+    margin-right: 20px;
+}
+
 /*dashboard css*/
 .graph {
     min-width: 310px; 
@@ -124,8 +147,11 @@ table tbody tr:nth-child(odd) {
 textarea {
     width: 100%;
 }
+.dropdown .select2-container--default .select2-selection--single {
+    border-radius: 0px;
+}
 .select2-container { 
-    width: 15% !important;
+    width: 20% !important;
 }
 .select2-results__options{
     box-shadow: 5px 7px 10px grey;
@@ -168,23 +194,10 @@ textarea {
 .paginate_button  {
     margin-left: 10px;
 }
-.slider {
-    min-height: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #b1afaf;
-    border-radius: 5px;
-    padding-left: 20px;
-    margin-bottom: 10px;
+.dataTables_filter {
+    display: inline-block;
+    float: right;
 }
-.slider:hover {
-    cursor: pointer;
+.dataTables_length {
+    display: inline-block;
 }
-.dropdown-image {
-    height: 70px;
-    width: 80px;
-    position: relative;
-    top: -3px;
-}
-

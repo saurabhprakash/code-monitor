@@ -26,7 +26,7 @@
 					<!-- Modal -->
 					<div class="modal fade" id="lint-report-{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="lint-report-Title"
 						aria-hidden="true">
-						<div class="modal-dialog" role="document">
+						<div class="modal-dialog modal-lg" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="lint-report-Title">Lint Report</h5>
@@ -43,7 +43,6 @@
 							</div>
 						</div>
 					</div>
-	
 					{% else %}No Report for this commit{% endif %}
 				</td>
 			</tr>
@@ -54,7 +53,3 @@
 	{% else %} 
 	<div class="no-commit-message "> No commit/issues found for given user </div>
 	{% endif %}
-	<!-- {% block script %}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	{% endblock script %} -->
