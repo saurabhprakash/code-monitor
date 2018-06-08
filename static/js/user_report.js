@@ -5,8 +5,7 @@ function init() {
     $('#user-dropdown').select2();
     $('#user-dropdown').on('change',function(){
         if(!$('#user-dropdown').find('option:selected').prop('disabled')) {
-            $('.user-data').html('');
-            $('.user-data').addClass('page-loader');
+            $('.user-data').html('').addClass('page-loader');
             showReleventData($('#user-dropdown').find('option:selected').val());
             }
     });

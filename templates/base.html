@@ -14,9 +14,11 @@
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css">
 			<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	</head>
  <body>
 		<header>
+			<img src="/static/images/company-logo.png" alt="kuliza logo">
 			<h1>Kuliza Codeboard</h1>
 		</header>
 		<div class="data-container">
@@ -28,9 +30,15 @@
 					<div class="menu-items user-report">User Report</div>
 				</a>
 				{% if request.user.is_authenticated %}
-				<a class="menu" href="/lead-reports">
-					<div class="menu-items lead-reports">Lead Report</div>
-				</a>
+				<div class="menu-items lead-reports">Lead Report</div>
+				<div class="submenu">
+					<a class="menu" href="/lead-reports?val=no_commit">
+						<div class="sub-menu-items menu-items" id="no-commit-sub-menu"> <span>&#10148;</span>  <span>No Commit Report</span> </div>
+					</a>
+					<a class="menu" href="/lead-reports?val=full_commit">
+						<div class="sub-menu-items menu-items" id="full-commit-sub-menu"><span>&#10148;</span> <span> Full Commit Report</span> </div>
+					</a>
+				</div>
 				{% endif %}
 			</div>
 			<div class="rendered-page">

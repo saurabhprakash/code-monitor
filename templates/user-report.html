@@ -5,24 +5,25 @@
 
 {% block content%}
 <div class="page-selector user-report-container" data-page-name="user-report"> 
-		<div class="select-message">Please select user to see the commits information</div>
-    <div class="dropdown">
+	<div class="select-message">
+		<span>Please select user to see the commits information </span> 
+	  <span class="dropdown">
 			<select name="dropdown-menu" id="user-dropdown">
 				<option value="select" selected="true" disabled>Select</option>  
 				{% for user in users %}
-					<option value = "{{user.id}}">{{user.first_name}}&nbsp;{{user.lastname}}</option>
+					<option value = "{{user.id}}">{{user.first_name}}&nbsp;{{user.last_name}}</option>
 				{% endfor %}
 			</select>
-    </div>
+	  </span>
+	</div>
     <div class="align-center">
         <div class="user-data">
-					<!-- data for selected user from API -->
+			<!-- data for selected user from API -->
         </div>
     </div>
 </div>
 	{% block script %}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
 	<script src="{% static '/js/user_report.js' %}"></script>
 	{% endblock script %}
 {% endblock %}

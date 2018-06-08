@@ -5,60 +5,68 @@
 
 {% block content%}
 <div class="page-selector" data-page-name="lead-reports">
-	<div class="show-no-commit-users slider">
-		<h5>No commit from following users:</h5>
-		<img class="dropdown-image" src="../static/images/arrow_drop_down.png" alt="dropdown arrow">
+	{% if request.GET.val == 'no_commit' %}
+	<div class="show-no-commit-container" id="no-commit-data">
+		<!-- <div class="show-no-commit-users slider">
+				<h5>No commit from following users:</h5>
+				<img class="dropdown-image" src="../static/images/arrow_drop_down.png" alt="dropdown arrow">
+		</div> -->
+		<table class="table table-sm" id='no-commit-users'>
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in no_commit_users %}
+				<tr>
+					<td scope="row">{{forloop.counter}}</td>
+					<td>{{user.first_name}}&nbsp;{{user.last_name}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
-	<table class="table table-sm hidden-content" id='no-commit-users'>
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">Name</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for user in no_commit_users %}
-			<tr>
-				<td scope="row">{{forloop.counter}}</td>
-				<td>{{user.first_name}}&nbsp;{{user.last_name}}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<div class="show-commit-report slider">
-		<h5>Full commit analysis report:</h5>
-		<img class="dropdown-image" src="../static/images/arrow_drop_down.png" alt="dropdown arrow">
+	{% elif request.GET.val == 'full_commit' %}
+	<div class="show-full-commit-container" id="full-commit-data">
+		<!-- <div class="show-commit-report slider">
+				<h5>Full commit analysis report:</h5>
+				<img class="dropdown-image" src="../static/images/arrow_drop_down.png" alt="dropdown arrow">
+		</div> -->
+		<table class="table table-sm " id='commit-report'>
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Commit count</th>
+					<th scope="col">Lines added</th>
+					<th scope="col">Lines removed</th>
+					<th scope="col">Python issues</th>
+					<th scope="col">Javascript issues</th>
+					<th scope="col">HTML issues</th>
+					<th scope="col">CSS issues</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for k, v in commit_report.weekly_report.items %}
+				<tr>
+					<td>{{v.name}}</td>
+					<td>{{v.commit_count}}</td>
+					<td>{{v.lines.lines_added}}</td>
+					<td>{{v.lines.lines_removed}}</td>
+					<td>{{v.issues.python}}</td>
+					<td>{{v.issues.javascript}}</td>
+					<td>{{v.issues.html}}</td>
+					<td>{{v.issues.css}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
-	<table class="table table-sm hidden-content" id='commit-report'>
-		<thead>
-			<tr>
-				<th scope="col">Name</th>
-				<th scope="col">Commit count</th>
-				<th scope="col">Lines added</th>
-				<th scope="col">Lines removed</th>
-				<th scope="col">Python issues</th>
-				<th scope="col">Javascript issues</th>
-				<th scope="col">HTML issues</th>
-				<th scope="col">CSS issues</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for k, v in commit_report.weekly_report.items %}
-			<tr>
-				<td>{{v.name}}</td>
-				<td>{{v.commit_count}}</td>
-				<td>{{v.lines.lines_added}}</td>
-				<td>{{v.lines.lines_removed}}</td>
-				<td>{{v.issues.python}}</td>
-				<td>{{v.issues.javascript}}</td>
-				<td>{{v.issues.html}}</td>
-				<td>{{v.issues.css}}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{%endif%}
 </div>
   {% block script %}
+	<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="{% static '/js/no_commit.js' %}"></script>
 	{% endblock script %}
 {% endblock %}
