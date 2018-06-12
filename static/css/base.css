@@ -1,0 +1,203 @@
+/* base css */
+*{
+    margin: 0px;
+    padding: 0px;
+    clear: both;
+}
+html, body {
+    height: 100%;
+}
+header{
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    background-color: lightgrey;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    box-shadow: 0px 2px 10px grey;
+}
+a{
+    cursor: pointer;
+    color: #f37839;
+}
+a.disabled {
+    color: #969794;
+    text-decoration: none;
+}
+header h1 {
+    width: 100%;
+    text-align: center;
+}
+.data-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 55px;
+    height: calc(100% - 70px);
+}
+.side-menubar {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    padding: 45px 0px 20px;
+    background-color:#15578f;
+    color: white;
+    position: fixed;
+    height: 100%;
+}
+.rendered-page {
+    width: 85%;
+    padding: 50px 50px 50px 60px;
+    margin-left: 15%;
+    height: 100%;
+}
+.page-selector {
+    margin-bottom: 40px;
+}
+.page-navigation-loader {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+   }
+.page-navigation-loader > img {
+    width: 200px;
+    height: 200px;
+}
+.menu-items {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    padding-left: 20px;
+    border-bottom: 1px solid #104572;
+}
+.sub-menu-items {
+    padding: 0 35px 0 35px;
+}
+.arrow {
+    margin-right: 10px;
+}
+.menu-items:hover {
+    cursor: pointer;
+}
+.menu-items.active {
+    background-color: #00346e;
+}
+.menu{
+    text-decoration: none !important;
+    color: white;
+}
+.menu:hover {
+    color: aquamarine;
+}
+.lead-reports {
+    display: flex;
+    justify-content: space-between;
+}
+.dropdown-image {
+    height: 17px;
+    width: 17px;
+    margin-right: 20px;
+}
+
+/*dashboard css*/
+.graph {
+    min-width: 310px; 
+    height: 400px; 
+    margin: 0 auto
+}
+/* user report css */
+.user-report-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.select-message {
+    margin-bottom: 10px;
+}
+.dropdown {
+    margin: 10px 20px 0px 25px;
+}
+table {
+    border: 1px solid lightgrey;
+}
+table thead tr {
+    background-color: #a7a7a7;
+    color: white;
+} 
+table tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+table tbody tr:nth-child(odd) {
+    background-color: white;
+}
+.modal-dialog {
+    max-width: 900px;
+    top: 200px;
+}
+#modal-data textarea + .parsed {
+    width: 100% !important; 
+    border: 1px solid lightgrey;
+}
+textarea {
+    width: 100%;
+}
+.dropdown .select2-container--default .select2-selection--single {
+    border-radius: 0px;
+}
+.select2-container { 
+    width: 20% !important;
+}
+.select2-results__options{
+    box-shadow: 5px 7px 10px grey;
+}
+.user-data{
+    width: 100%;
+}
+.align-center{
+    align-items: stretch;
+    display: flex;
+    height: 100%;
+}
+.no-commit-message {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.page-loader {
+    width: 200px;
+    height: 200px;
+    background-image: url(/static/images/Ellipsis-1s-200px.gif);
+    background-repeat: no-repeat;
+    align-self: center;
+    margin-left: calc(50% - 100px);
+}
+/* lead reports css */
+.hidden-content {
+    display: none;
+}
+.dataTables_paginate.paging_simple_numbers {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.dataTables_paginate.paging_simple_numbers span {
+   margin: 0px 20px;
+}
+.paginate_button  {
+    margin-left: 10px;
+}
+.dataTables_filter {
+    display: inline-block;
+    float: right;
+}
+.dataTables_length {
+    display: inline-block;
+}

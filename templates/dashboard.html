@@ -1,241 +1,197 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!--link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
-</head>
-<body>
-  <h1>Kuliza Codeboard</h1>
+{% extends 'base.html' %}
 
-
-  <!--weekly number of commit stats for all devs-->
-    <div id="number_of_commits_weekly" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
-  <!--weekly number of lines stats-->
-    <div id="number_of_lines_weekly" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-  <!--code standard issue-->
-    <div id="number_of_issues_weekly" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-  
-  <!--div class="container">
-    {% block content %}
-      <div id="content">
-          <p>Latest commit details:</p>
-          <p>Total commits:<span id="total_commits"></span></p>
-          <p>Last commit came from:<span id="last_commit_email"></span></p>
-          Per user commit entry:<p id="per_user_commits"></p>
-      </div>
-    {% endblock content %}
-  </div-->
-
-    <div class="dropdown" style="text-align: center;margin-top: 35px;">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Check Issues(for each user commits)
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {% for user in users %}
-                <a class="dropdown-item" href="{% url 'issues-users' user.id %}">{{user.first_name}}&nbsp;{{user.lastname}}</a>
-            {% endfor %}
-        </div>
+{% block content%}
+    <div  class="page-selector" data-page-name="dashboard">
+        <!--weekly number of commit stats for all devs-->
+        <div id="number_of_commits_weekly" class="graph"></div>
+        <!--weekly number of lines stats-->
+        <div id="number_of_lines_weekly" class="graph" ></div>
+        <!--code standard issue-->
+        <div id="number_of_issues_weekly" class="graph"></div>
     </div>
+        <!--p>Last week user commits: {{weekly_report}}</p-->
+	{% block script %}
+	<script>
+	// js-comment:1 
+			var commit_data = [];
+			var names = [];
+			var added = [];
+			var removed = [];
+			var python = [];
+			var html = [];
+			var javascript = [];
 
 
-  <!--p>Last week user commits: {{weekly_report}}</p-->
-  <br/>
-  <br/>
-  <br/>
-
-<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-  {% block script %}
-
-    <script>
-        /*
-        var socket = new WebSocket('ws://' + window.location.host + '/commit_report/');
-
-        socket.onopen = function open() {
-          console.log('WebSockets connection created.');
-        };
-
-        socket.onmessage = function message(event) {
-          var data = JSON.parse(event.data);
-          // NOTE: We escape JavaScript to prevent XSS attacks.
-          var count = encodeURI(data['count']);
-          var last_entry_email = encodeURI(data['last_entry_email']);
-          var user_commits_count = JSON.stringify((data['user_commits_count']));
-          $("#total_commits").html(count);
-          $("#last_commit_email").html(last_entry_email);
-          $("#per_user_commits").html(user_commits_count);
-        };
-
-        if (socket.readyState == WebSocket.OPEN) {
-          socket.onopen();
-        }
-        */
-
-        var commit_data = [];
-        var names = [];
-        var added = [];
-        var removed = [];
-        var python = [];
-        var html = [];
-        var javascript = [];
+			<!--Iterate over weekly data to provide data points for graph -->
+			{% for k, v in weekly_report.items %}
+					commit_data.push(['{{v.name}}', {{v.commit_count}}]);
+					names.push('{{v.name}}');
+					added.push({{v.lines.lines_added}});
+					removed.push({{v.lines.lines_removed}});
+					python.push({% if v.issues.python %}{{v.issues.python}}{% else %}0{% endif %});
+					html.push({% if v.issues.html %}{{v.issues.python}}{% else %}0{% endif %});
+					javascript.push({% if v.issues.javascript %}{{v.issues.javascript}}{% else %}0{% endif %});
+			{% endfor %}
 
 
-        <!--Iterate over weekly data to provide data points for graph -->
-        {% for k, v in weekly_report.items %}
-            commit_data.push(['{{v.name}}', {{v.commit_count}}]);
-            names.push('{{v.name}}');
-            added.push({{v.lines.lines_added}});
-            removed.push({{v.lines.lines_removed}});
-            python.push({% if v.issues.python %}{{v.issues.python}}{% else %}0{% endif %});
-            html.push({% if v.issues.html %}{{v.issues.python}}{% else %}0{% endif %});
-            javascript.push({% if v.issues.javascript %}{{v.issues.javascript}}{% else %}0{% endif %});
-        {% endfor %}
+			Highcharts.chart('number_of_commits_weekly', {
+					chart: {
+							type: 'column'
+					},
+					title: {
+							text: 'Number of commits per user(weekly)'
+					},
+					xAxis: {
+							type: 'category',
+							labels: {
+									rotation: -45,
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					},
+					yAxis: {
+							min: 0,
+							title: {
+									text: 'Number of commits'
+							}
+					},
+					legend: {
+							enabled: false
+					},
+					tooltip: {
+							pointFormat: 'Number of commits: <b>{point.y:.0f} </b>'
+					},
+					series: [{
+							name: 'Number_of_commits',
+							data: commit_data,
+							dataLabels: {
+									enabled: true,
+									rotation: -90,
+									color: '#FFFFFF',
+									align: 'right',
+									format: '{point.y:.0f}', // one decimal
+									y: 10, // 10 pixels down from the top
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					}]
+			});
 
 
-        Highcharts.chart('number_of_commits_weekly', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Number of commits per user(weekly)'
-            },
-            xAxis: {
-                type: 'category',
-                labels: {
-                    rotation: -45,
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
-                }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Number of commits'
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            tooltip: {
-                pointFormat: 'Number of commits: <b>{point.y:.0f} </b>'
-            },
-            series: [{
-                name: 'Number_of_commits',
-                data: commit_data,
-                dataLabels: {
-                    enabled: true,
-                    rotation: -90,
-                    color: '#FFFFFF',
-                    align: 'right',
-                    format: '{point.y:.0f}', // one decimal
-                    y: 10, // 10 pixels down from the top
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
-                }
-            }]
-        });
+			Highcharts.chart('number_of_lines_weekly', {
+					chart: {
+							type: 'column'
+					},
+					title: {
+							text: 'Number of lines add/remove per user(weekly)'
+					},
+					xAxis: {
+							categories: names,
+							crosshair: true
+					},
+					yAxis: {
+							min: 0,
+							title: {
+									text: 'Number of lines'
+							}
+					},
+					tooltip: {
+							headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+							pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+									'<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+							footerFormat: '</table>',
+							shared: true,
+							useHTML: true
+					},
+					plotOptions: {
+							column: {
+									pointPadding: 0.2,
+									borderWidth: 0
+							}
+					},
+					series: [{
+							name: 'Added',
+							data: added
+
+					}, {
+							name: 'Removed',
+							data: removed
+					}]
+			});
 
 
-        Highcharts.chart('number_of_lines_weekly', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Number of lines add/remove per user(weekly)'
-            },
-            xAxis: {
-                categories: names,
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Number of lines'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Added',
-                data: added
+			Highcharts.chart('number_of_issues_weekly', {
+					chart: {
+							type: 'column'
+					},
+					title: {
+							text: 'Number of issues per user(weekly)'
+					},
+					xAxis: {
+							categories: names,
+							crosshair: true
+					},
+					yAxis: {
+							min: 0,
+							title: {
+									text: 'Issues count'
+							}
+					},
+					tooltip: {
+							headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+							pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+									'<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
+							footerFormat: '</table>',
+							shared: true,
+							useHTML: true
+					},
+					plotOptions: {
+							column: {
+									pointPadding: 0.2,
+									borderWidth: 0
+							}
+					},
+					series: [{
+							name: 'Python',
+							data: python
 
-            }, {
-                name: 'Removed',
-                data: removed
-            }]
-        });
+					}, {
+							name: 'Html',
+							data: html
+
+					}, {
+							name: 'JavaScript',
+							data: javascript
+					}]
+			});
+			/* js-comment:1 
+			var socket = new WebSocket('ws://' + window.location.host + '/commit_report/');
+			
+			socket.onopen = function open() {
+				console.log('WebSockets connection created.');
+			};
+			
+			socket.onmessage = function message(event) {
+				var data = JSON.parse(event.data);
+				// NOTE: We escape JavaScript to prevent XSS attacks.
+				var count = encodeURI(data['count']);
+				var last_entry_email = encodeURI(data['last_entry_email']);
+				var user_commits_count = JSON.stringify((data['user_commits_count']));
+				$("#total_commits").html(count);
+				$("#last_commit_email").html(last_entry_email);
+				$("#per_user_commits").html(user_commits_count);
+			};
+			
+			if (socket.readyState == WebSocket.OPEN) {
+				socket.onopen();
+			}
+			*/
+	</script>
+	{% endblock script %}
+{% endblock %}
 
 
-        Highcharts.chart('number_of_issues_weekly', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Number of issues per user(weekly)'
-            },
-            xAxis: {
-                categories: names,
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Issues count'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Python',
-                data: python
-
-            }, {
-                name: 'Html',
-                data: html
-
-            }, {
-                name: 'JavaScript',
-                data: javascript
-            }]
-        });
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  {% endblock script %}
-</body>
-</html>

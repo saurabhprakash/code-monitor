@@ -3,6 +3,7 @@ import logging
 import datetime
 
 from django.views.generic.base import TemplateView
+from django.contrib.auth.models import User
 
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
@@ -133,3 +134,13 @@ class LeadReports(TemplateView):
         return context
 
     
+class UserReport(TemplateView):
+    """UserReport
+    """
+    template_name = 'user-report.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserReport, self).get_context_data(**kwargs)
+        context.update({'users': User.objects.only('first_name', 'last_name').\
+            filter(is_active=True, is_staff=False)})
+        return context

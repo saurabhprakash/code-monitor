@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load prettyjson %}
+{% prettyjson_setup %}
+{% load staticfiles %}
+
+{% block content%}
+<div class="page-selector user-report-container" data-page-name="user-report"> 
+	<div class="select-message">
+		<span>Please select user to see the commits information </span> 
+	  <span class="dropdown">
+			<select name="dropdown-menu" id="user-dropdown">
+				<option value="select" selected="true" disabled>Select</option>  
+				{% for user in users %}
+					<option value = "{{user.id}}">{{user.first_name}}&nbsp;{{user.last_name}}</option>
+				{% endfor %}
+			</select>
+	  </span>
+	</div>
+    <div class="align-center">
+        <div class="user-data">
+			<!-- data for selected user from API -->
+        </div>
+    </div>
+</div>
+	{% block script %}
+	<script src="{% static '/js/user_report.js' %}"></script>
+	{% endblock script %}
+{% endblock %}
