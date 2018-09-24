@@ -137,7 +137,7 @@ class ProcessDataFactory:
 
     def get_processed_data(self, bitbucket_response):
         # Convert the bitbucket byte response to json
-        json_response = json.loads(bitbucket_response)
+        json_response = json.loads(bitbucket_response.decode('utf-8'))
 
         # check for response type
         api_type = self.check_type(json_response.keys())
