@@ -1,9 +1,12 @@
 import ast
 import logging
-import datetime
 
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User
+from django.views import View
+from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
@@ -13,7 +16,7 @@ from core import models, serializers, constants, utils
 
 
 logger = logging.getLogger(__name__)
-
+decorators = [csrf_exempt, ]
 
 class MonitorView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, 
             mixins.ListModelMixin, viewsets.GenericViewSet):

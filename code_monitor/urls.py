@@ -23,7 +23,7 @@ from rest_framework.routers import SimpleRouter
 
 from core import views
 from core.commit_input_handler import main
-
+from bitbucket import views as bitbucket_views
 
 router = SimpleRouter()
 router.register(r'monitor', views.MonitorView)
@@ -36,6 +36,7 @@ urlpatterns = router.urls + [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^reports/', views.ReportView.as_view(), name='report'),
     url(r'^user/issues/(?P<user_id>[0-9]+)/', views.UserIssues.as_view(), name='issues-users'),
+    url(r'^bitbucket-data/', bitbucket_views.BitbucketView.as_view(), name='bitbucket'),
     #url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
     #url(r'^mail/report/', views.MailReport.as_view(), name='mail-report'),
     url(r'^lead-reports/', login_required(views.LeadReports.as_view(), login_url='/admin'), name='lead-reports'),

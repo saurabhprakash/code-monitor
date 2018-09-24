@@ -8,3 +8,4 @@ pandas==0.21.0
 django-prettyjson==0.3.0
 ipython==5.5.0
 kafka-python==1.4.2
+psycopg2==2.7.5

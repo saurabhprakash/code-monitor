@@ -27,7 +27,7 @@ SECRET_KEY = 'ajtg3m%^#)x0l#+jln8@_(vs7wwvuqkxqcb+%n^jp@sgplz+(u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
 
     # local
     'core',
-    'prettyjson'
+    'prettyjson',
+    'bitbucket',
 ]
 
 MIDDLEWARE = [
