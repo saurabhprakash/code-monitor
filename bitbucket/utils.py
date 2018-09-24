@@ -1,7 +1,10 @@
 import json
-from abc import ABC, abstractmethod
+from abc import ABC
+import logging
 
 from bitbucket import constants
+
+logger = logging.getLogger(__name__)
 
 
 class BaseData(ABC):
@@ -151,5 +154,10 @@ class ProcessDataFactory:
         elif api_type == constants.PULL_REQUEST:
             process_data = PRGeneric()
 
-        processed_data = process_data.set_data(json_response)
+        try:
+            processed_data = process_data.set_data(json_response)
+        except Exception as error:
+            logger.error('Bitbucket data processing error, please find data: %s' % str(json_response))
+            raise Exception('Error saving data !!')
+
         return processed_data
