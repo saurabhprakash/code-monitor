@@ -71,7 +71,7 @@ class BitbucketActivity(core_models.BaseModel):
         ]
 
     def __str__(self):
-        return "actor: %s, project:%s" % (self.name, self.project_full_name)
+        return "actor: %s, project:%s" % (self.actor_username, self.project_full_name)
 
 
 admin.site.register(BitbucketActivity)
