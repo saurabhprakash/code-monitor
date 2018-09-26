@@ -22,3 +22,16 @@ class BitbucketActivityManager(models.Manager):
             content_id=kwargs.get('content_id'),
             metadata=kwargs.get('metadata')
         )
+
+"""
+
+In past month:
+    - total number of push: BitbucketActivity.objects.filter(type_of_activity='push', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).count()
+    - total number of pull request: BitbucketActivity.objects.filter(type_of_activity='pullrequest', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).distinct('content_id').count()
+    - BitbucketActivity.objects.filter(type_of_activity='pullrequest', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).distinct('content_id')
+    - Information of all pr [(pr.content_id, pr.state) for pr in BitbucketActivity.objects.filter(type_of_activity='pullrequest', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).distinct('content_id')]
+    - merged prs count: BitbucketActivity.objects.filter(type_of_activity='pullrequest', state='M', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).distinct('content_id').count()
+    - open prs count: BitbucketActivity.objects.filter(type_of_activity='pullrequest', state='O', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).distinct('content_id').count()
+    - number of comments: BitbucketActivity.objects.filter(type_of_activity='pullrequest', sub_type='comment', created_at__range=((datetime.datetime.now() - datetime.timedelta(days=30)), datetime.datetime.now())).distinct('content_id').count()
+
+"""

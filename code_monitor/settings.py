@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'core',
     'prettyjson',
     'bitbucket',
+    'code_repo_base'
 ]
 
 MIDDLEWARE = [

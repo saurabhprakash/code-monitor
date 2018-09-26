@@ -61,7 +61,8 @@ class Push(BaseData):
                     get(constants.NEW).get(constants.TARGET).get(constants.DATE),
                 'message': data.get(constants.PUSH).get(constants.CHANGES)[constants.ZERO].\
                     get(constants.NEW).get(constants.TARGET).get(constants.MESSAGE)
-            }
+            } if data.get(constants.PUSH).get(constants.CHANGES)[constants.ZERO].\
+                    get(constants.NEW) else {}
         }
         return self.processed_response
 
