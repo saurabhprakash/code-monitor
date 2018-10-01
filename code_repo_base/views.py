@@ -1,5 +1,23 @@
 from django.views import View
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+from code_repo_base import models, utils
+
+decorators = [csrf_exempt, ]
+
+
+@method_decorator(decorators, name='dispatch')
+class WebhookDataView(View):
+
+    def post(self, request):
+        # Process required request data and get information to be saved in database
+        pd = utils.ProcessDataFactory()
+        data = pd.get_processed_data(request.body)
+        models.CodeRepoDataBase.objects.create_entry(**data)
+        return JsonResponse({'message': 'Data added successfully.'})
+
 
 
 class ReportsView(View):

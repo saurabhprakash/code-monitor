@@ -44,11 +44,10 @@ INSTALLED_APPS = [
     # third party
     'rest_framework',
     'channels',
+    'prettyjson',
 
     # local
     'core',
-    'prettyjson',
-    'bitbucket',
     'code_repo_base'
 ]
 

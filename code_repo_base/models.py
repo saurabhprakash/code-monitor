@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 
 from jsonfield import JSONField
 
@@ -56,4 +57,6 @@ class CodeRepoDataBase(core_models.BaseModel):
             models.Index(fields=['created_at', 'type_of_activity', 'sub_type']),
             models.Index(fields=['created_at', 'type_of_activity', 'sub_type', 'actor_username']),
         ]
-        abstract = True
+
+
+admin.site.register(CodeRepoDataBase)

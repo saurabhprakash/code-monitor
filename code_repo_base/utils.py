@@ -2,12 +2,10 @@ import json
 from abc import ABC
 import logging
 
-from bitbucket import constants
+from code_repo_base import constants
 
 logger = logging.getLogger(__name__)
 
-
-# Todo: Move base to code repo base
 
 class BaseData(ABC):
 

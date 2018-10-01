@@ -1,5 +1,3 @@
-# Todo: move common constants for code repo base module
-
 PUSH = 'push'
 COMMENT = 'comment'
 PULL_REQUEST = 'pullrequest'
@@ -48,4 +46,3 @@ PARTICIPANTS = 'participants'
 APPROVED = 'approved'
 PARTICIPATED_ON = 'participated_on'
 CLOSED_BY = 'closed_by'
-

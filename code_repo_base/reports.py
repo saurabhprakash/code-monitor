@@ -29,6 +29,7 @@ class CompanyLevel(ReportPointers):
     def generate_report(self) -> Dict:
         response = {}
 
+
         return response
 
 
