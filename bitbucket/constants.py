@@ -1,3 +1,5 @@
+# Todo: move common constants for code repo base module
+
 PUSH = 'push'
 COMMENT = 'comment'
 PULL_REQUEST = 'pullrequest'
@@ -14,7 +16,6 @@ USER = 'user'
 DISPLAY_NAME = 'display_name'
 REPOSITORY = 'repository'
 FULL_NAME = 'full_name'
-PUSH = 'push'
 CHANGES = 'changes'
 ZERO = 0
 NEW = 'new'
