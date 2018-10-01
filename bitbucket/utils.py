@@ -7,6 +7,8 @@ from bitbucket import constants
 logger = logging.getLogger(__name__)
 
 
+# Todo: Move base to code repo base
+
 class BaseData(ABC):
 
     def __init__(self):
