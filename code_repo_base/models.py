@@ -3,6 +3,7 @@ from django.db import models
 from jsonfield import JSONField
 
 from core import models as core_models
+from code_repo_base import manager
 
 
 class CodeRepoDataBase(core_models.BaseModel):
@@ -45,6 +46,8 @@ class CodeRepoDataBase(core_models.BaseModel):
     content_id = models.CharField(max_length=30, db_index=True, blank=True, null=True)
 
     metadata = JSONField()
+
+    objects = manager.CodeRepoDataBaseManager()
 
     class Meta:
         indexes = [
