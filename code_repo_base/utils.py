@@ -1,5 +1,6 @@
-import json
 from abc import ABC
+from datetime import datetime
+import json
 import logging
 
 from code_repo_base import constants
@@ -165,3 +166,17 @@ class ProcessDataFactory:
             raise Exception('Error saving data !!')
 
         return processed_data
+
+
+class GenericUtility:
+
+    @staticmethod
+    def convert_to_datetime(string_date: str) -> datetime:
+        """
+        :param string_date: string date object, expected format: 21-11-2018
+        :return: converted datetime object
+        """
+        try:
+            return datetime.strptime(string_date, "%d-%m-%Y")
+        except ValueError:
+            raise ValueError(constants.TIME_FORMAT_ERROR)

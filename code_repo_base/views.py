@@ -1,9 +1,11 @@
+import datetime
+
 from django.views import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from code_repo_base import models, utils
+from code_repo_base import models, utils, constants, reports
 
 decorators = [csrf_exempt, ]
 
@@ -17,7 +19,6 @@ class WebhookDataView(View):
         data = pd.get_processed_data(request.body)
         models.CodeRepoDataBase.objects.create_entry(**data)
         return JsonResponse({'message': 'Data added successfully.'})
-
 
 
 class ReportsView(View):
@@ -43,7 +44,11 @@ class ReportsView(View):
             Weekend work
 
     """
+
     def get(self, request):
-
-        return JsonResponse({})
-
+        start_date = utils.GenericUtility.convert_to_datetime(request.GET.get('sd')) \
+            if request.GET.get('sd') else datetime.datetime.today() \
+            + datetime.timedelta(days=-constants.DEFAULT_NUMBER_OF_DAYS)
+        end_date = utils.GenericUtility.convert_to_datetime(request.GET.get('ed')) \
+            if request.GET.get('ed') else datetime.datetime.today()
+        return JsonResponse(reports.ReportGeneration.construct_report(start_date, end_date))

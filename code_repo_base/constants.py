@@ -46,3 +46,5 @@ PARTICIPANTS = 'participants'
 APPROVED = 'approved'
 PARTICIPATED_ON = 'participated_on'
 CLOSED_BY = 'closed_by'
+DEFAULT_NUMBER_OF_DAYS = 30
+TIME_FORMAT_ERROR = 'Time format mismatch'
