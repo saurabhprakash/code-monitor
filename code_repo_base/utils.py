@@ -7,6 +7,9 @@ from code_repo_base import constants
 logger = logging.getLogger(__name__)
 
 
+# TODO: This utility has bitbucket specific keys used which needs to
+# TODO: be made removed and made generic
+
 class BaseData(ABC):
 
     def __init__(self):
