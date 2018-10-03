@@ -29,18 +29,31 @@ class CompanyLevel(ReportPointers):
         super(CompanyLevel, self).__init__(start_time, end_time)
 
     def generate_report(self) -> Dict:
-        response = {}
         self.number_of_push = CodeRepoDataBase.objects.get_push_queryset\
             (self.start_time, self.end_time).count()
         self.number_of_pr_raised = CodeRepoDataBase.objects.get_pull_queryset\
             (self.start_time, self.end_time).count()
         self.number_of_pr_merged = CodeRepoDataBase.objects.get_merged_pull_request_queryset\
             (self.start_time, self.end_time).count()
-        # self.number_of_pr_reviewed =
-        self.number_of_comments_on_pr = CodeRepoDataBase.objects.\
-            get_comments_on_pull_request_queryset(self.start_time, self.end_time).count()
-        self.number_of_approvals_on_pr = CodeRepoDataBase.objects.\
-            get_approvals_on_pull_request_queryset(self.start_time, self.end_time).count()
+
+        # Comments processing, additional creation of pr_id_set_comments is
+        # being done to calculate reviews
+        pull_request_comments_qs = CodeRepoDataBase.objects.\
+            get_comments_on_pull_request_queryset(self.start_time, self.end_time)
+        pr_id_set_comments = set()
+        [pr_id_set_comments.add(pr.content_id) for pr in pull_request_comments_qs]
+        self.number_of_comments_on_pr = len(pull_request_comments_qs)
+
+        # Approvals processing, additional creation of pr_id_set_approvals is
+        # being done to calculate reviews
+        pull_request_approvals_qs = CodeRepoDataBase.objects.\
+            get_approvals_on_pull_request_queryset(self.start_time, self.end_time)
+        pr_id_set_approvals = set()
+        [pr_id_set_approvals.add(pr.content_id) for pr in pull_request_approvals_qs]
+        self.number_of_approvals_on_pr = len(pull_request_approvals_qs)
+
+        # Reviews processing
+        self.number_of_pr_reviewed = len(pr_id_set_comments.union(pr_id_set_approvals))
 
         # TODO: Check for auto conversion feature
         response = {
