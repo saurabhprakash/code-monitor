@@ -154,7 +154,7 @@ class IndividualReports(ReportPointers):
             'commenters_list': [e for e in \
                 CodeRepoDataBase.objects.commenters_count\
                 (self.start_time, self.end_time)],
-            'reviewers_list': [e for e in \
+            'approvers_list': [e for e in \
                 CodeRepoDataBase.objects.reviewers_count\
                 (self.start_time, self.end_time)]
         }
