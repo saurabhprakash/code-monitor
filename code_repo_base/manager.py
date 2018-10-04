@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.db.models import Count
 
 from code_repo_base import constants as code_repo_constants
 
@@ -77,6 +78,30 @@ class CodeRepoDataBaseManager(models.Manager):
             filter(type_of_activity=code_repo_constants.PULL_REQUEST,
                    sub_type=code_repo_constants.APPROVAL,
                    created_at__range=(start, end))
+
+    def commenters_count(self, start: datetime, end: datetime):
+        """
+        :parameter start: start datetime
+        :parameter end: end datetime
+        :return: commenters count
+        """
+        return super(CodeRepoDataBaseManager, self).get_queryset(). \
+            filter(type_of_activity=code_repo_constants.PULL_REQUEST,
+                   sub_type=code_repo_constants.COMMENT,
+                   created_at__range=(start, end)).values('actor_username').\
+            annotate(count=Count('actor_username'))
+
+    def reviewers_count(self, start: datetime, end: datetime):
+        """
+        :parameter start: start datetime
+        :parameter end: end datetime
+        :return: reviewers count
+        """
+        return super(CodeRepoDataBaseManager, self).get_queryset(). \
+            filter(type_of_activity=code_repo_constants.PULL_REQUEST,
+                   sub_type=code_repo_constants.APPROVAL,
+                   created_at__range=(start, end)).values('actor_username').\
+            annotate(count=Count('actor_username'))
 
     def create_entry(self, **kwargs):
         """
