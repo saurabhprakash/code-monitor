@@ -106,7 +106,7 @@ class ProjectLevel(ReportPointers):
         # update number_of_push, self.number_of_pr_merged is subtracted from self.number_of_push
         # because for each merge one extra push is created
         for k in self.number_of_push.keys():
-            self.number_of_push[k] -= self.number_of_pr_merged[k]
+            self.number_of_push[k] -= self.number_of_pr_merged[k] if k in self.number_of_pr_merged else 0
 
         # Comments processing, additional creation of pr_id_set_comments is
         # being done to calculate reviews
