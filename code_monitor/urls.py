@@ -40,7 +40,10 @@ urlpatterns = router.urls + [
     # Todo: change "bitbucket-data" url to generic name as this is generic capture view
     url(r'^bitbucket-data/', codebase_repo_views.WebhookDataView.as_view(), name='webhook'),
 
-    url(r'^code-repo-report/', codebase_repo_views.ReportsView.as_view(), name='reports'),
+    url(r'^code-repo-report/', codebase_repo_views.ReportsView.as_view(),
+        name='reports'),
+    url(r'^code-review-report/', codebase_repo_views.CodeReportsView.as_view()),
+
     # url(r'^user/compare/', views.UserCompare.as_view(), name='compare-users'),
     # url(r'^mail/report/', views.MailReport.as_view(), name='mail-report'),
     url(r'^lead-reports/', login_required(views.LeadReports.as_view(), login_url='/admin'), name='lead-reports'),

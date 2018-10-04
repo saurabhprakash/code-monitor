@@ -57,7 +57,8 @@ class CompanyLevel(ReportPointers):
 
         # TODO: Check for auto conversion feature
         response = {
-            'number_of_push': self.number_of_push,
+            # self.number_of_pr_merged is subtracted from self.number_of_push because for each merge one extra push is created
+            'number_of_push': self.number_of_push-self.number_of_pr_merged,
             'number_of_pr_raised': self.number_of_pr_raised,
             'number_of_pr_merged': self.number_of_pr_merged,
             'number_of_pr_reviewed': self.number_of_pr_reviewed,

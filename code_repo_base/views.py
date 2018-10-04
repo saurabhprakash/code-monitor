@@ -1,6 +1,7 @@
 import datetime
 
 from django.views import View
+from django.views.generic.base import TemplateView
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -52,3 +53,12 @@ class ReportsView(View):
         end_date = utils.GenericUtility.convert_to_datetime(request.GET.get('ed')) \
             if request.GET.get('ed') else datetime.datetime.today()
         return JsonResponse(reports.ReportGeneration.construct_report(start_date, end_date))
+
+
+class CodeReportsView(TemplateView):
+    template_name = "review_report.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(CodeReportsView, self).get_context_data(**kwargs)
+
+        return context

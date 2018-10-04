@@ -15,7 +15,8 @@
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	</head>
+        {% block custom_head_content %}{% endblock %}
+    </head>
 	<body>
 		<header>
 			<img src="/static/images/company-logo.png" alt="kuliza logo">
@@ -24,10 +25,13 @@
 		<div class="data-container">
 			<div class="side-menubar">
 				<a class="menu" href="/">
-					<div class="menu-items dashboard">Dashboard</div>
+					<div class="menu-items dashboard">Users Report Dashboard</div>
 				</a>
 				<a class="menu" href="/user-report">
-					<div class="menu-items user-report">User Report</div>
+					<div class="menu-items user-report">Users Issues Report</div>
+				</a>
+				<a class="menu" href="/code-review-report">
+					<div class="menu-items user-report">Code Review Report</div>
 				</a>
 				{% if request.user.is_authenticated %}
 				<div class="has-sub-menu">			
