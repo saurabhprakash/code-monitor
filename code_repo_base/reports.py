@@ -29,8 +29,10 @@ class CompanyLevel(ReportPointers):
         super(CompanyLevel, self).__init__(start_time, end_time)
 
     def generate_report(self) -> Dict:
+
         self.number_of_push = CodeRepoDataBase.objects.get_push_queryset\
             (self.start_time, self.end_time).count()
+
         self.number_of_pr_raised = CodeRepoDataBase.objects.get_pull_queryset\
             (self.start_time, self.end_time).count()
         self.number_of_pr_merged = CodeRepoDataBase.objects.get_merged_pull_request_queryset\
@@ -57,7 +59,8 @@ class CompanyLevel(ReportPointers):
 
         # TODO: Check for auto conversion feature
         response = {
-            # self.number_of_pr_merged is subtracted from self.number_of_push because for each merge one extra push is created
+            # self.number_of_pr_merged is subtracted from self.number_of_push
+            # because for each merge one extra push is created
             'number_of_push': self.number_of_push-self.number_of_pr_merged,
             'number_of_pr_raised': self.number_of_pr_raised,
             'number_of_pr_merged': self.number_of_pr_merged,
@@ -99,6 +102,11 @@ class ProjectLevel(ReportPointers):
         self.number_of_pr_merged = self.categorize_based_on_project(\
             CodeRepoDataBase.objects.get_merged_pull_request_queryset\
             (self.start_time, self.end_time))
+
+        # update number_of_push, self.number_of_pr_merged is subtracted from self.number_of_push
+        # because for each merge one extra push is created
+        for k in self.number_of_push.keys():
+            self.number_of_push[k] -= self.number_of_pr_merged[k]
 
         # Comments processing, additional creation of pr_id_set_comments is
         # being done to calculate reviews
@@ -206,5 +214,7 @@ class ReportGeneration:
         return {
             'company': report.company_level,
             'project': report.project_level,
-            'individual': report.individual_level
+            'individual': report.individual_level,
+            'projects': [p.get('project_full_name') for p \
+                         in CodeRepoDataBase.objects.get_projects(start_time, end_time)]
         }

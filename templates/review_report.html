@@ -37,7 +37,7 @@ ul {
                 <li>Total number of code review request raised: <span id="company_number_of_pr_raised"></span></li>
                 <li>Total number of code reviewed: <span id="company_number_of_pr_reviewed"></span></li>
                 <li>Total number of comments made on code review request: <span id="company_number_of_comments_on_pr"></span></li>
-                <li>Total number of code reviews approved: <span id="company_number_of_approvals_on_pr"></span></li>
+                <li>Total number of approvals on code reviews request: <span id="company_number_of_approvals_on_pr"></span></li>
             </ul>
 
             <h6><b>Some inference from above numbers</b></h6>
@@ -45,6 +45,16 @@ ul {
                 <li>Percentage of code review request raised for code being pushed: <span id="raise_percentage"></span></li>
                 <li>Percentage of code push that are being reviewed: <span id="review_percentage"></span></li>
             </ul>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="card">
+          <!--img src="img_avatar.png" alt="Avatar" style="width:100%"-->
+          <div class="container">
+            <h6><b>Project Level Reports</b></h6>
+            <span id="project_reports" class="elements"></span>
           </div>
         </div>
 
@@ -71,6 +81,23 @@ ul {
         $('#raise_percentage').html((response.company.number_of_pr_raised/response.company.number_of_push * 100).toFixed(2) + " %");
         $('#review_percentage').html((response.company.number_of_pr_reviewed/response.company.number_of_pr_raised*100).toFixed(2) + " %");
 
+        var order = ['number_of_push', 'number_of_pr_raised', 'number_of_pr_reviewed', 'number_of_comments_on_pr',
+            'number_of_approvals_on_pr'];
+        var texts = ['Number of code pushes', 'Number of code review requests', 'Number of code reviews done',
+                    'Number of comments on code review request', 'Number of approvals on code review'];
+        for (p in response.projects) {
+            var reference_element = $(".elements").last();
+            project_html = '<div class="element"><h6><b>' + response.projects[p] + '</b></h6><ul>';
+            for (o in order) {
+                console.log(response.project[order[o]]);
+                project_html += '<li>' + texts[o] + ': <span>' + response.project[order[o]][response.projects[p]] + '</span></li>';
+            }
+
+            project_html += '<li>Percentage of code review request raised for code being pushed: <span>' + (response.project.number_of_pr_raised[response.projects[p]]/response.project.number_of_push[response.projects[p]] * 100).toFixed(2) + " %" + '</span></li>';
+            project_html += '<li>Percentage of code push that are being reviewed: <span>' + (response.project.number_of_pr_reviewed[response.projects[p]]/response.project.number_of_pr_raised[response.projects[p]]*100).toFixed(2) + " %" + '</span></li>';
+            project_html += '</ul></div>';
+            reference_element.after(project_html);
+        }
 
 	</script>
 	{% endblock script %}

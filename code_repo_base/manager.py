@@ -103,6 +103,13 @@ class CodeRepoDataBaseManager(models.Manager):
                    created_at__range=(start, end)).values('actor_username').\
             annotate(count=Count('actor_username'))
 
+    def get_projects(self, start: datetime, end: datetime):
+        """
+        :return: returns the distinct project names
+        """
+        return super(CodeRepoDataBaseManager, self).get_queryset().\
+            filter(created_at__range=(start, end)).values('project_full_name').distinct()
+
     def create_entry(self, **kwargs):
         """
         Create an entry to bitbucket activity model,
