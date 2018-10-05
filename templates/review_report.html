@@ -78,6 +78,15 @@ ul {
             }
         }
 
+        function get_percentage(a, b) {
+            if (a && b) {
+                var result = (a / b) *100;
+                result = result.toFixed(2);
+                return result;
+            }
+            return 0;
+        }
+
         $('#raise_percentage').html((response.company.number_of_pr_raised/response.company.number_of_push * 100).toFixed(2) + " %");
         $('#review_percentage').html((response.company.number_of_pr_reviewed/response.company.number_of_pr_raised*100).toFixed(2) + " %");
 
@@ -87,14 +96,20 @@ ul {
                     'Number of comments on code review request', 'Number of approvals on code review'];
         for (p in response.projects) {
             var reference_element = $(".elements").last();
-            project_html = '<div class="element"><h6><b>' + response.projects[p] + '</b></h6><ul>';
-            for (o in order) {
-                console.log(response.project[order[o]]);
-                project_html += '<li>' + texts[o] + ': <span>' + response.project[order[o]][response.projects[p]] + '</span></li>';
+            if (response.projects_display_name.hasOwnProperty(response.projects[p])) {
+                project_html = '<div class="element"><h6><b>' + response.projects_display_name[response.projects[p]] + '</b></h6><ul>';
+            }
+            else {
+                project_html = '<div class="element"><h6><b>' + response.projects[p] + '</b></h6><ul>';
             }
 
-            project_html += '<li>Percentage of code review request raised for code being pushed: <span>' + (response.project.number_of_pr_raised[response.projects[p]]/response.project.number_of_push[response.projects[p]] * 100).toFixed(2) + " %" + '</span></li>';
-            project_html += '<li>Percentage of code push that are being reviewed: <span>' + (response.project.number_of_pr_reviewed[response.projects[p]]/response.project.number_of_pr_raised[response.projects[p]]*100).toFixed(2) + " %" + '</span></li>';
+            for (o in order) {
+                console.log(response.project[order[o]]);
+                project_html += '<li>' + texts[o] + ': <span>' + (response.project[order[o]][response.projects[p]] ? response.project[order[o]][response.projects[p]] : 0) + '</span></li>';
+            }
+
+            // project_html += '<li>Percentage of code review request raised for code being pushed: <span>' + get_percentage(response.project.number_of_pr_raised[response.projects[p]], response.project.number_of_push[response.projects[p]]) + " %" + '</span></li>';
+            project_html += '<li>Percentage of code review request that are being reviewed: <span>' + get_percentage(response.project.number_of_pr_reviewed[response.projects[p]], response.project.number_of_pr_raised[response.projects[p]]) + " %" + '</span></li>';
             project_html += '</ul></div>';
             reference_element.after(project_html);
         }

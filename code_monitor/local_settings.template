@@ -42,3 +42,32 @@ CACHES = {
         'KEY_PREFIX': 'custom_application_keys'
     }
 }
+
+LOCAL_PROJECT_MAP = {
+    'kulizadev/las-dashboard': 'Product | Loan Analytics Dashboard | (kulizadev/las-dashboard)',
+    'kulizadev/render-engine-hybrid': 'Product | Rendering Engine | (kulizadev/render-engine-hybrid)',
+    'kulizadev/labs-integration-stanc-sms':
+        'Standard Charted | Integrations | SMS | (kulizadev/labs-integration-stanc-sms)',
+    'kulizadev/labs-integration-stanc-email':
+        'Standard Charted | Integrations | EMAIL | (kulizadev/labs-integration-stanc-sms)',
+    'kulizadev/labs-integration-stanc-otp':
+        'Standard Charted | Integrations | OTP | (kulizadev/labs-integration-stanc-sms)',
+    'kulizadev/brandsite': 'HDFCLife | Frontend | (kulizadev/brandsite)',
+    'kulizadev/labs-integration-singapore-acra':
+        'Product | Integration | Singapore ACRA | (kulizadev/labs-integration-singapore-acra)',
+    'kulizadev/uti-backend': 'UTI | Backend | (kulizadev/uti-backend)',
+    'kulizadev/uti-frontend': 'UTI | Frontend | (kulizadev/uti-frontend)',
+    'kulizadev/ibid-frontend-server': 'IBID | Frontend | (kulizadev/ibid-frontend-server)',
+    'kulizadev/flowable-bpm': 'Product | BPM codebase | Backend | (kulizadev/flowable-bpm)',
+    'kulizadev/ca-portal-fe': 'Product | Frontend | (kulizadev/ca-portal-fe)',
+    'kulizadev/hdfc-ios': 'HDFCLife | IOS | (kulizadev/hdfc-ios)',
+    'kulizadev/collectabillia-frontend': 'Collectabillia | Frontend | (kulizadev/collectabillia-frontend)',
+    'kulizadev/backoffice-master': 'Product | Backoffice | Frontend | (kulizadev/backoffice-master)',
+    'kulizadev/myfilerunner': 'Myfilerunner | (kulizadev/myfilerunner)',
+    'kulizadev/acko-inspection': 'Acko | Android | Kotlin | (kulizadev/acko-inspection)',
+    'kulizadev/lend_in_bpm': 'Svakarma | BPM | Backend | (kulizadev/lend_in_bpm)',
+    'kulizadev/django-2018-batch': 'Training | 2018 Batch | (kulizadev/django-2018-batch)',
+    'kulizadev/hdfc-life-backend': 'HDFCLife | Backend | (kulizadev/hdfc-life-backend)',
+    'kulizadev/lead-management': 'Product | Lead Management | Frontend | (kulizadev/lead-management)',
+    'kulizadev/labs-integration-fec-dbsync': 'FEC | Ingegration | DBsync | (kulizadev/labs-integration-fec-dbsync)',
+}

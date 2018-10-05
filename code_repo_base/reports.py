@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Dict
@@ -216,5 +218,6 @@ class ReportGeneration:
             'project': report.project_level,
             'individual': report.individual_level,
             'projects': [p.get('project_full_name') for p \
-                         in CodeRepoDataBase.objects.get_projects(start_time, end_time)]
+                         in CodeRepoDataBase.objects.get_projects(start_time, end_time)],
+            'projects_display_name': settings.LOCAL_PROJECT_MAP
         }
