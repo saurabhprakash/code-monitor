@@ -59,6 +59,8 @@ ul {
 
             <h6><b>Project Level Reports</b></h6>
             <div id="project_graphs" class="graph"></div>
+            <div id="approval_graphs" class="graph"></div>
+            <div id="comment_graphs" class="graph"></div>
 
             <h6><b>Detailed Report</b></h6>
             <div id="project_reports" class="elements"></div>
@@ -126,6 +128,17 @@ ul {
             graph_data.push([response.projects_display_name[response.projects[p]], parseFloat(percent)]);
         }
 
+        approval_data = [];
+        for (data in response.individual.approvers_list) {
+            approval_data.push([response.individual.approvers_list[data].actor_username, response.individual.approvers_list[data].count]);
+        }
+
+        comments_data = [];
+        for (data in response.individual.commenters_list) {
+            comments_data.push([response.individual.commenters_list[data].actor_username, response.individual.commenters_list[data].count]);
+        }
+
+
         $(document).ready(function(){
             Highcharts.chart('project_graphs', {
 					chart: {
@@ -159,6 +172,103 @@ ul {
 					series: [{
 							name: 'Code Review Percentage',
 							data: graph_data,
+							dataLabels: {
+									enabled: true,
+									rotation: -90,
+									color: '#FFFFFF',
+									align: 'right',
+									format: '{point.y:.0f}', // one decimal
+									y: 10, // 10 pixels down from the top
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					}]
+			});
+
+
+			Highcharts.chart('approval_graphs', {
+					chart: {
+							type: 'column'
+					},
+					title: {
+							text: 'Number of Approvals done( for code review requests by individuals)'
+					},
+					xAxis: {
+							type: 'category',
+							labels: {
+									rotation: -45,
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					},
+					yAxis: {
+							min: 0,
+							title: {
+									text: 'Approvals Count'
+							}
+					},
+					legend: {
+							enabled: false
+					},
+					tooltip: {
+							pointFormat: 'Approvals Count: <b>{point.y:.0f} </b>'
+					},
+					series: [{
+							name: 'Approvals Count by Individuals',
+							data: approval_data,
+							dataLabels: {
+									enabled: true,
+									rotation: -90,
+									color: '#FFFFFF',
+									align: 'right',
+									format: '{point.y:.0f}', // one decimal
+									y: 10, // 10 pixels down from the top
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					}]
+			});
+
+
+
+			Highcharts.chart('comment_graphs', {
+					chart: {
+							type: 'column'
+					},
+					title: {
+							text: 'Number of Comments( on code review requests by individuals)'
+					},
+					xAxis: {
+							type: 'category',
+							labels: {
+									rotation: -45,
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					},
+					yAxis: {
+							min: 0,
+							title: {
+									text: 'Comments Count'
+							}
+					},
+					legend: {
+							enabled: false
+					},
+					tooltip: {
+							pointFormat: 'Comments count: <b>{point.y:.0f} </b>'
+					},
+					series: [{
+							name: 'Comments count',
+							data: comments_data,
 							dataLabels: {
 									enabled: true,
 									rotation: -90,
