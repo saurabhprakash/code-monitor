@@ -1,8 +1,9 @@
-from django.conf import settings
-
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Dict
+from collections import defaultdict
+
+from django.conf import settings
 
 from code_repo_base.models import CodeRepoDataBase
 
@@ -114,11 +115,11 @@ class ProjectLevel(ReportPointers):
         # being done to calculate reviews
         pull_request_comments_qs = CodeRepoDataBase.objects.\
             get_comments_on_pull_request_queryset(self.start_time, self.end_time)
-        pr_id_set_comments = set()
-        content_id_project_map = {}
+
+        content_id_project_map = defaultdict(set)
+
         for pr in pull_request_comments_qs:
-            pr_id_set_comments.add(pr.content_id)
-            content_id_project_map[pr.content_id] = pr.project_full_name
+            content_id_project_map[pr.project_full_name].add(pr.content_id)
         self.number_of_comments_on_pr = self.categorize_based_on_project\
             (pull_request_comments_qs)
 
@@ -126,22 +127,14 @@ class ProjectLevel(ReportPointers):
         # being done to calculate reviews
         pull_request_approvals_qs = CodeRepoDataBase.objects.\
             get_approvals_on_pull_request_queryset(self.start_time, self.end_time)
-        pr_id_set_approvals = set()
         for pr in pull_request_approvals_qs:
-            pr_id_set_approvals.add(pr.content_id)
-            content_id_project_map[pr.content_id] = pr.project_full_name
+            content_id_project_map[pr.project_full_name].add(pr.content_id)
+
         self.number_of_approvals_on_pr = self.categorize_based_on_project\
             (pull_request_approvals_qs)
 
-        # Reviews processing
-        reviewed_prs = pr_id_set_comments.union(pr_id_set_approvals)
-        report_map = {}
-        for entry in reviewed_prs:
-            if entry not in report_map:
-                report_map[content_id_project_map[entry]] = 1
-            else:
-                report_map[content_id_project_map[entry]] += 1
-        self.number_of_pr_reviewed = report_map
+        # Reviews processing]
+        self.number_of_pr_reviewed = {k: len(v) for k, v in content_id_project_map.items()}
 
         # TODO: Check for auto conversion feature
         response = {
