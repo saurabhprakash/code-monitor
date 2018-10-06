@@ -123,7 +123,7 @@ ul {
             project_html += '<li>Percentage of code review request that are being reviewed: <span>' + percent + " %" + '</span></li>';
             project_html += '</ul></div>';
             reference_element.after(project_html);
-            graph_data.push([response.projects[p], parseFloat(percent)]);
+            graph_data.push([response.projects_display_name[response.projects[p]], parseFloat(percent)]);
         }
 
         $(document).ready(function(){
@@ -132,7 +132,7 @@ ul {
 							type: 'column'
 					},
 					title: {
-							text: 'Projects'
+							text: 'Code review percentage for raised code review request across projects'
 					},
 					xAxis: {
 							type: 'category',
