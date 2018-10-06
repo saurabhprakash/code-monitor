@@ -52,9 +52,18 @@ ul {
 
         <div class="card">
           <!--img src="img_avatar.png" alt="Avatar" style="width:100%"-->
+
+
+
           <div class="container">
+
             <h6><b>Project Level Reports</b></h6>
-            <span id="project_reports" class="elements"></span>
+            <div id="project_graphs" class="graph"></div>
+
+            <h6><b>Detailed Report</b></h6>
+            <div id="project_reports" class="elements"></div>
+
+
           </div>
         </div>
 
@@ -90,6 +99,7 @@ ul {
         $('#raise_percentage').html((response.company.number_of_pr_raised/response.company.number_of_push * 100).toFixed(2) + " %");
         $('#review_percentage').html((response.company.number_of_pr_reviewed/response.company.number_of_pr_raised*100).toFixed(2) + " %");
 
+        var graph_data = [];
         var order = ['number_of_push', 'number_of_pr_raised', 'number_of_pr_reviewed', 'number_of_comments_on_pr',
             'number_of_approvals_on_pr'];
         var texts = ['Number of code pushes', 'Number of code review requests', 'Number of code reviews done',
@@ -108,11 +118,63 @@ ul {
                 project_html += '<li>' + texts[o] + ': <span>' + (response.project[order[o]][response.projects[p]] ? response.project[order[o]][response.projects[p]] : 0) + '</span></li>';
             }
 
+            var percent = get_percentage(response.project.number_of_pr_reviewed[response.projects[p]], response.project.number_of_pr_raised[response.projects[p]]);
             // project_html += '<li>Percentage of code review request raised for code being pushed: <span>' + get_percentage(response.project.number_of_pr_raised[response.projects[p]], response.project.number_of_push[response.projects[p]]) + " %" + '</span></li>';
-            project_html += '<li>Percentage of code review request that are being reviewed: <span>' + get_percentage(response.project.number_of_pr_reviewed[response.projects[p]], response.project.number_of_pr_raised[response.projects[p]]) + " %" + '</span></li>';
+            project_html += '<li>Percentage of code review request that are being reviewed: <span>' + percent + " %" + '</span></li>';
             project_html += '</ul></div>';
             reference_element.after(project_html);
+            graph_data.push([response.projects[p], parseFloat(percent)]);
         }
+
+        $(document).ready(function(){
+            Highcharts.chart('project_graphs', {
+					chart: {
+							type: 'column'
+					},
+					title: {
+							text: 'Projects'
+					},
+					xAxis: {
+							type: 'category',
+							labels: {
+									rotation: -45,
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					},
+					yAxis: {
+							min: 0,
+							title: {
+									text: 'Code Review Percentage'
+							}
+					},
+					legend: {
+							enabled: false
+					},
+					tooltip: {
+							pointFormat: 'Review Percent: <b>{point.y:.0f} </b>'
+					},
+					series: [{
+							name: 'Code Review Percentage',
+							data: graph_data,
+							dataLabels: {
+									enabled: true,
+									rotation: -90,
+									color: '#FFFFFF',
+									align: 'right',
+									format: '{point.y:.0f}', // one decimal
+									y: 10, // 10 pixels down from the top
+									style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+									}
+							}
+					}]
+			});
+        });
+
 
 	</script>
 	{% endblock script %}
