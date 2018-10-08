@@ -33,4 +33,13 @@ Purpose of code monitor project is to track overall activity of code across lang
   - Java: https://github.com/pmd/pmd
   
 
-
+Java setup:
+ -  brew install checkstyle
+ - ```
+     $ cd $HOME
+     $ curl -OL https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.8.0/pmd-bin-6.8.0.zip
+     $ unzip pmd-bin-6.8.0.zip
+     $ alias pmd="$HOME/pmd-bin-6.8.0/bin/run.sh pmd"
+     $ pmd -d /usr/src -R rulesets/java/quickstart.xml -f text
+   ```
+ - ln -s <location>/pmd-bin-6.8.0/bin/run.sh /usr/local/bin/run.sh
