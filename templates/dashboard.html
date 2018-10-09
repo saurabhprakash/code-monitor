@@ -19,6 +19,7 @@
 			var removed = [];
 			var python = [];
 			var html = [];
+			var java = [];
 			var javascript = [];
 
 
@@ -29,6 +30,7 @@
 					added.push({{v.lines.lines_added}});
 					removed.push({{v.lines.lines_removed}});
 					python.push({% if v.issues.python %}{{v.issues.python}}{% else %}0{% endif %});
+					java.push({% if v.issues.java %}{{v.issues.java}}{% else %}0{% endif %});
 					html.push({% if v.issues.html %}{{v.issues.python}}{% else %}0{% endif %});
 					javascript.push({% if v.issues.javascript %}{{v.issues.javascript}}{% else %}0{% endif %});
 			{% endfor %}
@@ -166,6 +168,9 @@
 					}, {
 							name: 'JavaScript',
 							data: javascript
+					}, {
+							name: 'Java',
+							data: java
 					}]
 			});
 			/* js-comment:1 
